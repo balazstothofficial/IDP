@@ -1,6 +1,9 @@
 module Main where
 
-import Lib
+import InterviewReader
 
 main :: IO ()
-main = someFunc
+main = readInterviews directory >>= print
+
+directory :: String
+directory = "/Users/balazstoth/IDP/interviews/"
