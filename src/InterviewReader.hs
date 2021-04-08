@@ -1,7 +1,7 @@
 module InterviewReader
   ( readInterview,
     readInterviews,
-    readInterviewsRelativeToCurrentDirectory,
+    Directory (Relative, Absolute),
     Interview,
     title,
     content,
@@ -21,25 +21,35 @@ data Interview = Interview
 instance Show Interview where
   show interview = "Interview: " ++ title interview
 
-readInterviewsRelativeToCurrentDirectory :: FilePath -> IO [Interview]
-readInterviewsRelativeToCurrentDirectory relativePath =
-  getCurrentDirectory >>= readInterviews . concatWithDirectory
-  where
-    concatWithDirectory directory = directory ++ pathSeparator ++ relativePath
+data Directory = Relative FilePath | Absolute FilePath
 
-readInterviews :: FilePath -> IO [Interview]
-readInterviews path = doesFileExist path >>= recurse
+readInterviews :: Directory -> IO [Interview]
+readInterviews = useDirectoryFor readInterviewsFromPath
+
+readInterview :: Directory -> IO Interview
+readInterview = useDirectoryFor readInterviewFromPath
+
+readInterviewsFromPath :: FilePath -> IO [Interview]
+readInterviewsFromPath path = doesFileExist path >>= recurse
   where
     recurse isFile =
       if isFile
-        then readInterview path <&> (: [])
-        else listDirectoryWithFullPath path >>= fmap concat . mapM readInterviews
+        then readInterviewFromPath path <&> (: [])
+        else listDirectoryWithFullPath path >>= fmap concat . mapM readInterviewsFromPath
 
-readInterview :: FilePath -> IO Interview
-readInterview path = readFile path <&> Interview fileName
+readInterviewFromPath :: FilePath -> IO Interview
+readInterviewFromPath path = readFile path <&> Interview fileName
   where
     fileName = last splitPath
     splitPath = splitOn pathSeparator path
+    
+useDirectoryFor :: (FilePath -> IO a) -> (Directory -> IO a)
+useDirectoryFor operation = transformedOperation
+  where
+    transformedOperation (Absolute path) = operation path
+    transformedOperation (Relative path) = getCurrentDirectory >>= operation . concatWithPath
+      where
+        concatWithPath directory = directory ++ pathSeparator ++ path
 
 listDirectoryWithFullPath :: FilePath -> IO [FilePath]
 listDirectoryWithFullPath path = listDirectory path <&> fmap concatWithPath
