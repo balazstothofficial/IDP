@@ -11,6 +11,7 @@ where
 import Data.Functor
 import Data.List.Split
 import System.Directory
+import System.FilePath (pathSeparator)
 
 data Interview = Interview
   { title :: String,
@@ -41,21 +42,20 @@ readInterviewFromPath :: FilePath -> IO Interview
 readInterviewFromPath path = readFile path <&> Interview fileName
   where
     fileName = last splitPath
-    splitPath = splitOn pathSeparator path
-    
+    splitPath = splitOn [pathSeparator] path
+
 useDirectoryFor :: (FilePath -> IO a) -> (Directory -> IO a)
 useDirectoryFor operation = transformedOperation
   where
     transformedOperation (Absolute path) = operation path
-    transformedOperation (Relative path) = getCurrentDirectory >>= operation . concatWithPath
+    transformedOperation (Relative path) = getCurrentDirectory >>= operation . appendPath
       where
-        concatWithPath directory = directory ++ pathSeparator ++ path
+        appendPath = flip concatPaths path
 
 listDirectoryWithFullPath :: FilePath -> IO [FilePath]
-listDirectoryWithFullPath path = listDirectory path <&> fmap concatWithPath
+listDirectoryWithFullPath path = listDirectory path <&> fmap prependPath
   where
-    concatWithPath fileName = path ++ pathSeparator ++ fileName
+    prependPath = concatPaths path
 
--- TODO: Use platform specific path separator
-pathSeparator :: String
-pathSeparator = "/"
+concatPaths :: FilePath -> FilePath -> FilePath
+concatPaths first second = first ++ [pathSeparator] ++ second
