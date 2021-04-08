@@ -3,7 +3,7 @@ module Main where
 import InterviewReader
 
 main :: IO ()
-main = readInterviews directory >>= print
+main = readInterviewsRelativeToCurrentDirectory directory >>= print
 
 directory :: String
-directory = "/Users/balazstoth/IDP/interviews/"
+directory = "interviews"

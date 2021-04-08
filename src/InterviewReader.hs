@@ -1,6 +1,7 @@
 module InterviewReader
   ( readInterview,
     readInterviews,
+    readInterviewsRelativeToCurrentDirectory,
     Interview,
     title,
     content,
@@ -19,6 +20,12 @@ data Interview = Interview
 
 instance Show Interview where
   show interview = "Interview: " ++ title interview
+
+readInterviewsRelativeToCurrentDirectory :: FilePath -> IO [Interview]
+readInterviewsRelativeToCurrentDirectory relativePath =
+  getCurrentDirectory >>= readInterviews . concatWithDirectory
+  where
+    concatWithDirectory directory = directory ++ pathSeparator ++ relativePath
 
 readInterviews :: FilePath -> IO [Interview]
 readInterviews path = doesFileExist path >>= recurse
