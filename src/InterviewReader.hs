@@ -1,3 +1,5 @@
+{-# LANGUAGE FlexibleInstances #-}
+
 module InterviewReader
   ( readInterview,
     readInterviews,
@@ -19,30 +21,32 @@ data Interview = Interview
   }
   deriving (Eq)
 
+-- Just for debugging purposes
 instance Show Interview where
   show interview = "Interview: " ++ title interview
 
 data Directory = Relative FilePath | Absolute FilePath
 
-readInterviews :: Directory -> IO [Interview]
-readInterviews = useDirectoryFor readInterviewsFromPath
+class InterviewReader a where
+  readInterview :: a -> IO Interview
+  readInterviews :: a -> IO [Interview]
 
-readInterview :: Directory -> IO Interview
-readInterview = useDirectoryFor readInterviewFromPath
+instance InterviewReader Directory where
+  readInterview = useDirectoryFor readInterview
+  readInterviews = useDirectoryFor readInterviews
 
-readInterviewsFromPath :: FilePath -> IO [Interview]
-readInterviewsFromPath path = doesFileExist path >>= recurse
-  where
-    recurse isFile =
-      if isFile
-        then readInterviewFromPath path <&> (: [])
-        else listDirectoryWithFullPath path >>= fmap concat . mapM readInterviewsFromPath
+instance InterviewReader FilePath where
+  readInterview path = readFile path <&> Interview fileName
+    where
+      fileName = last splitPath
+      splitPath = splitOn [pathSeparator] path
 
-readInterviewFromPath :: FilePath -> IO Interview
-readInterviewFromPath path = readFile path <&> Interview fileName
-  where
-    fileName = last splitPath
-    splitPath = splitOn [pathSeparator] path
+  readInterviews path = doesFileExist path >>= recurse
+    where
+      recurse isFile =
+        if isFile
+          then readInterview path <&> (: [])
+          else listDirectoryWithFullPath path >>= fmap concat . mapM readInterviews
 
 useDirectoryFor :: (FilePath -> IO a) -> (Directory -> IO a)
 useDirectoryFor operation = transformedOperation
