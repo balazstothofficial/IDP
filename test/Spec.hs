@@ -1,5 +1,5 @@
 import DocumentTest
-import TestUtils
+import Test.HUnit (runTestTT, Counts)
 
-main :: IO ()
-main = printTests createDocumentTests
+main :: IO Counts
+main = runTestTT createDocumentTests

@@ -23,6 +23,6 @@ createDocumentTests =
         @?= Document
           { words = ["hallo", "d", "d", "d", "quall", "qualle", "halle", "hallo"],
             wordCounts =
-              fromList [("hallo", 2), ("d", 3), ("quall", 1), ("qualle", 1), ("halle", 1)]
+              fromList [("hallo", 3), ("d", 3), ("quall", 1), ("qualle", 1), ("halle", 1)]
           }
     ]
