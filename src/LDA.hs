@@ -355,10 +355,10 @@ test = do
   let voc = vocabulary
   print $ length ds
   let b' = 50
-  -- let d' = length ds
+  let d' = length ds
   let w' = IM.size voc
   lambda0 <- randomGammaMatrix k' w'
-  let model0 = initModel k' w' b' lambda0
+  let model0 = initModel k' w' d' lambda0
   let batches = makeBatches b' ds
   finalModel <- Data.Random.runRVar (evalStateT (foldM update model0 batches) model0) Data.Random.StdRandom
-  print $ printTopics finalModel
+  writeFile "test.txt" (show finalModel)

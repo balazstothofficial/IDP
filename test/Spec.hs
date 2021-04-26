@@ -1,2 +1,5 @@
+import DocumentTest
+import TestUtils
+
 main :: IO ()
-main = putStrLn "Test suite not yet implemented"
+main = printTests createDocumentTests

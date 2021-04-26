@@ -52,5 +52,7 @@
     <orderEntry type="library" name="matrix-0.3.6.1" level="project" />
     <orderEntry type="library" name="loop-0.3.0" level="project" />
     <orderEntry type="library" name="semigroups-0.19.1" level="project" />
+    <orderEntry type="library" name="HUnit-1.6.1.0" level="project" />
+    <orderEntry type="library" name="call-stack-0.2.0" level="project" />
   </component>
 </module>
