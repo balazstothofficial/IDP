@@ -157,7 +157,6 @@ eStepOuter batch = do
 -- Perform e-step update for a single document in a batch.
 
 -- * et expELogTheta
-
 eStepDocIter ::
   Matrix Double ->
   (Gamma, SStats) ->
@@ -177,7 +176,6 @@ eStepDocIter et (g, ss) (i, doc) = do
   return (updateRow i g gammad', ss')
 
 -- * n; g gammad; a alpha; e expElogthetad; c cts; p phinorm; b expElogbetad
-
 innerIter ::
   Int ->
   DV.Vector Double ->

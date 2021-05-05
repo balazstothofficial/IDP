@@ -1,90 +1,98 @@
-module NewLDA where
+module NewLDA
+  ( Model (Model),
+    initialModel,
+    run,
+  )
+where
 
-import Control.Monad.State (replicateM)
-import Data.Map (Map)
-import qualified Data.Map as Map
-import Data.Matrix (Matrix)
+import Data.Matrix (Matrix, scaleMatrix)
 import qualified Data.Matrix as Matrix
-import Data.Random (MonadRandom, gamma, sample)
-import Data.Random.RVar (RVar)
-import Data.Set (Set)
 import qualified Data.Set as Set
-import Prelude hiding (words)
 import Document
+import qualified HyperParameter
+import Lambda
+import MatrixExtensions
+import Model (Model)
+import qualified Model
+import Vocabulary
+import Prelude hiding (words)
 
--- | HyperParameters for an LDA model.
---    * alpha Prior on topic weights Theta
---    * eta   E[log(Beta)], where Beta is a matrix of p(w|topic)
---    * rho
---    * kappa learning parameter; decay factor for influence of batches
---    * tau   learning parameter to downweight early documents
-data HyperParameter = HyperParameter
-  { alpha :: Double,
-    eta :: Double,
-    rho :: Double,
-    kappa :: Double,
-    tau :: Double
-  }
-  deriving (Show)
+run :: [Document] -> Int -> IO ()
+run documents numberOfTopics = do
+  let vocabulary = Vocabulary.fromDocuments documents
+  let numberOfWords = Set.size vocabulary
+  initialLambda <- randomGammaMatrix numberOfTopics numberOfWords
+  let model = initialModel documents numberOfTopics initialLambda
+  putStr $ show model
+  putStr $ show $ updateModel model
 
-data Model = Model
-  { hyperParameter :: HyperParameter,
-    numberOfTopics :: Int,
-    numberOfWords :: Int,
-    numberOfDocuments :: Int,
-    numberOfUpdates :: Int,
-    -- TODO: Find out what they are used for
-    gamma2 :: Matrix Double,
-    eLogBeta :: Matrix Double,
-    expELogBeta :: Matrix Double,
-    lambda :: Matrix Double,
-    -- TODO: Rename to something understandable
-    sstats :: Matrix Double,
-    vocabulary :: Set String
-  }
-  deriving (Show)
-
--- initialModel :: Set String -> Int -> Int -> Model
--- initialModel vocabulary numberOfTopics numberOfDocuments = Model {}
-
-gammaRandomVariable :: RVar Double
-gammaRandomVariable = gamma 100.0 (1.0 / 100.0)
-
-randomGammaMatrix :: (MonadRandom m) => Int -> Int -> m (Matrix Double)
-randomGammaMatrix rows columns = matrixFromList <$> randomVariables
+initialModel :: [Document] -> Int -> Matrix Double -> Model
+initialModel documents numberOfTopics lambda =
+  Model.Model
+    { Model.numberOfTopics = numberOfTopics,
+      Model.numberOfWords = numberOfWords,
+      Model.numberOfDocuments = numberOfDocuments,
+      Model.numberOfUpdates = 0,
+      Model.gamma = Matrix.zero numberOfDocuments numberOfTopics,
+      Model.eLogBeta = Matrix.zero numberOfTopics numberOfWords,
+      Model.expELogBeta = Matrix.zero numberOfTopics numberOfWords,
+      Model.lambda = lambda,
+      Model.sstats = Matrix.zero numberOfTopics numberOfWords,
+      Model.vocabulary = vocabulary,
+      Model.hyperParameter =
+        HyperParameter.HyperParameter
+          { HyperParameter.alpha = 1.0 / fromIntegral numberOfTopics,
+            HyperParameter.eta = 1.0 / fromIntegral numberOfTopics,
+            HyperParameter.rho = 0.7,
+            HyperParameter.kappa = 0.7,
+            HyperParameter.tau = 1024
+          }
+    }
   where
-    matrixFromList xs = Matrix.fromList rows columns xs
+    vocabulary = Vocabulary.fromDocuments documents
+    numberOfDocuments = length documents
+    numberOfWords = Set.size vocabulary
 
-    randomVariables = replicateM matrixSize sampleRandomVariable
+updateModel :: Model -> Model
+updateModel = updateRho . updateBeta . updateLambda . incrementUpdateCounter
+  where
+    incrementUpdateCounter model = model {Model.numberOfUpdates = numberOfUpdates + 1}
       where
-        matrixSize = rows * columns
-        sampleRandomVariable = sample gammaRandomVariable
+        numberOfUpdates = Model.numberOfUpdates model
 
-testVocabulary :: Set String
-testVocabulary =
-  Set.fromList
-    [ "the",
-      "tree",
-      "runs",
-      "quickly",
-      "far",
-      "away",
-      "lions",
-      "yell",
-      "she",
-      "shoots",
-      "shapes",
-      "now",
-      "he",
-      "hits",
-      "hops",
-      "happily"
-    ]
+updateLambda :: Model -> Model
+updateLambda model = model {Model.lambda = newLambda}
+  where
+    lambda = Model.lambda model
+    hyperParameter = Model.hyperParameter model
+    sstats = Model.sstats model
+    rho = HyperParameter.rho hyperParameter
+    eta = HyperParameter.eta hyperParameter
+    numberOfDocuments = fromIntegral $ Model.numberOfDocuments model
 
-testDocuments :: [Document]
-testDocuments =
-  [ createDocument ["the", "tree", "runs", "quickly"],
-    createDocument ["far", "away", "lions", "yell"],
-    createDocument ["she", "shoots", "shapes", "now"],
-    createDocument ["he", "hits", "hops", "happily"]
-  ]
+    scaledLambda = scaleMatrix (1.0 - rho) lambda
+    scaledSStats = scaleMatrix rho $ scalarAdd eta $ scaleMatrix numberOfDocuments sstats
+    newLambda = Matrix.elementwise (+) scaledLambda scaledSStats
+
+updateBeta :: Model -> Model
+updateBeta model = model {Model.eLogBeta = eLogBeta, Model.expELogBeta = expELogBeta}
+  where
+    lambda = Model.lambda model
+    eLogBeta = dirichletExpectation lambda
+    expELogBeta = expOf eLogBeta
+
+updateRho :: Model -> Model
+updateRho model = model {Model.hyperParameter = hyperParameter {HyperParameter.rho = rho}}
+  where
+    numberOfUpdates = Model.numberOfUpdates model
+    hyperParameter = Model.hyperParameter model
+    tau = HyperParameter.tau hyperParameter
+    kappa = HyperParameter.kappa hyperParameter
+
+    rho = rhot tau numberOfUpdates kappa
+
+-- How much to weight the information from a mini-batch.
+-- p_t = (t_0 + t)^{-k}
+-- TODO: Rename to something understandable
+rhot :: Double -> Int -> Double -> Double
+rhot tau count kap = (tau + fromIntegral count) ** (- kap)

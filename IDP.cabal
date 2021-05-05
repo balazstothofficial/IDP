@@ -28,11 +28,16 @@ source-repository head
 library
   exposed-modules:
       InterviewReader
-      Tester
       LDA
       MathUtils
       NewLDA
       Document
+      TestData
+      Vocabulary
+      Lambda
+      Model
+      MatrixExtensions
+      HyperParameter
   other-modules:
       Paths_IDP
   hs-source-dirs:
