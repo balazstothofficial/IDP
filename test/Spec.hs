@@ -1,5 +1,6 @@
 import DocumentTest
-import Test.HUnit (runTestTT, Counts)
+import Test.Hspec
 
-main :: IO Counts
-main = runTestTT createDocumentTests
+main :: IO ()
+main = hspec $ do
+  createDocumentTests
