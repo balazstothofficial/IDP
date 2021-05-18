@@ -59,8 +59,8 @@ initializeTopicMaps rGenerator numberOfTopics (document : documents) =
     assignRandomTopics :: StdGen -> [String] -> WordTopicMap -> DocumentTopicMap -> ([Int], WordTopicMap, DocumentTopicMap, StdGen)
     assignRandomTopics randomGenerator words wordTopicMap documentTopicMap = case words of
       [] -> ([], wordTopicMap, documentTopicMap, randomGenerator)
-      (word : otherWords) -> case assignRandomTopics nextRandomGenerator otherWords wordTopicMap documentTopicMap ? show word ++ show topic of
-        (z', nw', nd', _) -> (topic : z', Map.alter increase (word, topic) nw' ? show nw', Map.alter increase (document, topic) nd', nextRandomGenerator)
+      (word : otherWords) -> case assignRandomTopics nextRandomGenerator otherWords wordTopicMap documentTopicMap of
+        (z', nw', nd', _) -> (topic : z', Map.alter increase (word, topic) nw', Map.alter increase (document, topic) nd', nextRandomGenerator)
       where
         (topic, nextRandomGenerator) = randomTopic randomGenerator numberOfTopics
 
