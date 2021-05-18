@@ -13,7 +13,7 @@ data Document = Document
   { words :: [String],
     wordCounts :: WordCountMap
   }
-  deriving (Show, Eq)
+  deriving (Show, Eq, Ord)
 
 type WordCountMap = Map String Int
 

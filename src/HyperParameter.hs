@@ -1,10 +1,7 @@
 module HyperParameter
-  ( HyperParameter(HyperParameter),
+  ( HyperParameter (HyperParameter),
     alpha,
-    eta,
-    rho,
-    kappa,
-    tau,
+    beta,
   )
 where
 
@@ -16,9 +13,6 @@ where
 --    * tau   learning parameter to downweight early documents
 data HyperParameter = HyperParameter
   { alpha :: Double,
-    eta :: Double,
-    rho :: Double,
-    kappa :: Double,
-    tau :: Double
+    beta :: Double
   }
-  deriving (Show)
+  deriving (Show, Eq)

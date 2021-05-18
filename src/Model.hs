@@ -1,20 +1,24 @@
 module Model
   ( Model (Model),
+    WordTopicMap,
+    DocumentTopicMap,
     hyperParameter,
     numberOfTopics,
     numberOfWords,
     numberOfDocuments,
     numberOfUpdates,
-    gamma,
-    eLogBeta,
-    expELogBeta,
-    lambda,
-    sstats,
     vocabulary,
+    theta,
+    phi,
+    wordTopicMap,
+    documentTopicMap,
+    topicAssignments,
   )
 where
 
+import Data.Map (Map)
 import Data.Matrix (Matrix, ncols, nrows)
+import Document
 import HyperParameter
 import Vocabulary
 
@@ -24,15 +28,19 @@ data Model = Model
     numberOfWords :: Int,
     numberOfDocuments :: Int,
     numberOfUpdates :: Int,
-    -- TODO: Find out what they are used for
-    gamma :: Matrix Double,
-    eLogBeta :: Matrix Double,
-    expELogBeta :: Matrix Double,
-    lambda :: Matrix Double,
-    -- TODO: Rename to something understandable
-    sstats :: Matrix Double,
-    vocabulary :: Vocabulary
+    -- TODO: Find better names:
+    theta :: Matrix Double, -- Size: NumberOfDocuments x NumberOfTopics
+    phi :: Matrix Double, -- Size: NumberOfTopics x NumberOfWords
+    vocabulary :: Vocabulary, -- Size: NumberOfWords
+    wordTopicMap :: WordTopicMap, -- Number of words associated to specific topic
+    documentTopicMap :: DocumentTopicMap, -- Number of words with topic in specific document
+    topicAssignments :: [[Int]] -- Size: NumberOfDocuments x Document size
   }
+  deriving (Eq)
+
+type WordTopicMap = Map (String, Int) Int
+
+type DocumentTopicMap = Map (Document, Int) Int
 
 -- For debugging purposes:
 instance Show Model where
@@ -48,18 +56,18 @@ instance Show Model where
       ++ show (numberOfDocuments model)
       ++ "\n\tNumber of Updates = "
       ++ show (numberOfUpdates model)
-      ++ "\n\tGamma = "
-      ++ showDimensions (gamma model)
-      ++ "\n\teLogBeta = "
-      ++ show (eLogBeta model)
-      ++ "\n\texpELogBeta = "
-      ++ show (expELogBeta model)
-      ++ "\n\tLambda = "
-      ++ showDimensions (lambda model)
-      ++ "\n\tSstats = "
-      ++ showDimensions (sstats model)
+      ++ "\n\tTheta = "
+      ++ show (theta model)
+      ++ "\n\tPhi = "
+      ++ show (phi model)
       ++ "\n\tVocabulary = "
       ++ show (vocabulary model)
+      ++ "\n\twordTopicMap = "
+      ++ show (wordTopicMap model)
+      ++ "\n\tdocumentTopicMap = "
+      ++ show (documentTopicMap model)
+      ++ "\n\ttopicAssignments = "
+      ++ show (topicAssignments model)
       ++ "\n}\n"
 
 showDimensions :: Matrix a -> String

@@ -2,97 +2,84 @@ module NewLDA
   ( Model (Model),
     initialModel,
     run,
+    randomTopic,
   )
 where
 
-import Data.Matrix (Matrix, scaleMatrix)
+import qualified Data.Map as Map
 import qualified Data.Matrix as Matrix
-import qualified Data.Set as Set
-import Document
+import Debug.Trace (trace)
+import Document (Document)
+import qualified Document
 import qualified HyperParameter
-import Lambda
-import MatrixExtensions
-import Model (Model)
+import Model (DocumentTopicMap, Model, WordTopicMap)
 import qualified Model
+import System.Random
 import Vocabulary
 import Prelude hiding (words)
 
 run :: [Document] -> Int -> IO ()
 run documents numberOfTopics = do
-  let vocabulary = Vocabulary.fromDocuments documents
-  let numberOfWords = Set.size vocabulary
-  initialLambda <- randomGammaMatrix numberOfTopics numberOfWords
-  let model = initialModel documents numberOfTopics initialLambda
+  let model = initialModel documents numberOfTopics
   putStr $ show model
   putStr $ show $ updateModel model
 
-initialModel :: [Document] -> Int -> Matrix Double -> Model
-initialModel documents numberOfTopics lambda =
+initialModel :: [Document] -> Int -> Model
+initialModel documents numberOfTopics =
   Model.Model
     { Model.numberOfTopics = numberOfTopics,
       Model.numberOfWords = numberOfWords,
       Model.numberOfDocuments = numberOfDocuments,
       Model.numberOfUpdates = 0,
-      Model.gamma = Matrix.zero numberOfDocuments numberOfTopics,
-      Model.eLogBeta = Matrix.zero numberOfTopics numberOfWords,
-      Model.expELogBeta = Matrix.zero numberOfTopics numberOfWords,
-      Model.lambda = lambda,
-      Model.sstats = Matrix.zero numberOfTopics numberOfWords,
+      Model.theta = Matrix.zero numberOfDocuments numberOfTopics,
+      Model.phi = Matrix.zero numberOfTopics numberOfWords,
       Model.vocabulary = vocabulary,
       Model.hyperParameter =
         HyperParameter.HyperParameter
-          { HyperParameter.alpha = 1.0 / fromIntegral numberOfTopics,
-            HyperParameter.eta = 1.0 / fromIntegral numberOfTopics,
-            HyperParameter.rho = 0.7,
-            HyperParameter.kappa = 0.7,
-            HyperParameter.tau = 1024
-          }
+          { HyperParameter.alpha = 50 / fromIntegral numberOfTopics,
+            HyperParameter.beta = 0.1
+          },
+      Model.wordTopicMap = wordTopicMap,
+      Model.documentTopicMap = documentTopicMap,
+      Model.topicAssignments = topicAssignments
     }
   where
     vocabulary = Vocabulary.fromDocuments documents
     numberOfDocuments = length documents
-    numberOfWords = Set.size vocabulary
+    numberOfWords = length vocabulary
+    (topicAssignments, wordTopicMap, documentTopicMap, _) = initializeTopicMaps (mkStdGen 42) numberOfTopics documents
+
+initializeTopicMaps :: StdGen -> Int -> [Document] -> ([[Int]], WordTopicMap, DocumentTopicMap, StdGen)
+initializeTopicMaps rGen _ [] = ([], Map.empty, Map.empty, rGen)
+initializeTopicMaps rGenerator numberOfTopics (document : documents) =
+  let (t', nw', nd', gen') = assignRandomTopics rGenerator (Document.words document) Map.empty Map.empty
+   in let (ts, nw, nd, gen'') = initializeTopicMaps gen' numberOfTopics documents
+       in (t' : ts, Map.unionWith (+) nw' nw, Map.union nd' nd, gen'')
+  where
+    assignRandomTopics :: StdGen -> [String] -> WordTopicMap -> DocumentTopicMap -> ([Int], WordTopicMap, DocumentTopicMap, StdGen)
+    assignRandomTopics randomGenerator words wordTopicMap documentTopicMap = case words of
+      [] -> ([], wordTopicMap, documentTopicMap, randomGenerator)
+      (word : otherWords) -> case assignRandomTopics nextRandomGenerator otherWords wordTopicMap documentTopicMap ? show word ++ show topic of
+        (z', nw', nd', _) -> (topic : z', Map.alter increase (word, topic) nw' ? show nw', Map.alter increase (document, topic) nd', nextRandomGenerator)
+      where
+        (topic, nextRandomGenerator) = randomTopic randomGenerator numberOfTopics
+
+        increase :: Maybe Int -> Maybe Int
+        increase Nothing = Just 1
+        increase (Just x) = Just (x + 1)
 
 updateModel :: Model -> Model
-updateModel = updateRho . updateBeta . updateLambda . incrementUpdateCounter
+updateModel = incrementUpdateCounter
   where
     incrementUpdateCounter model = model {Model.numberOfUpdates = numberOfUpdates + 1}
       where
         numberOfUpdates = Model.numberOfUpdates model
 
-updateLambda :: Model -> Model
-updateLambda model = model {Model.lambda = newLambda}
+randomTopic :: StdGen -> Int -> (Int, StdGen)
+randomTopic randomGenerator numberOfTopics = randomR range randomGenerator
   where
-    lambda = Model.lambda model
-    hyperParameter = Model.hyperParameter model
-    sstats = Model.sstats model
-    rho = HyperParameter.rho hyperParameter
-    eta = HyperParameter.eta hyperParameter
-    numberOfDocuments = fromIntegral $ Model.numberOfDocuments model
+    range = (0, numberOfTopics)
 
-    scaledLambda = scaleMatrix (1.0 - rho) lambda
-    scaledSStats = scaleMatrix rho $ scalarAdd eta $ scaleMatrix numberOfDocuments sstats
-    newLambda = Matrix.elementwise (+) scaledLambda scaledSStats
-
-updateBeta :: Model -> Model
-updateBeta model = model {Model.eLogBeta = eLogBeta, Model.expELogBeta = expELogBeta}
-  where
-    lambda = Model.lambda model
-    eLogBeta = dirichletExpectation lambda
-    expELogBeta = expOf eLogBeta
-
-updateRho :: Model -> Model
-updateRho model = model {Model.hyperParameter = hyperParameter {HyperParameter.rho = rho}}
-  where
-    numberOfUpdates = Model.numberOfUpdates model
-    hyperParameter = Model.hyperParameter model
-    tau = HyperParameter.tau hyperParameter
-    kappa = HyperParameter.kappa hyperParameter
-
-    rho = rhot tau numberOfUpdates kappa
-
--- How much to weight the information from a mini-batch.
--- p_t = (t_0 + t)^{-k}
--- TODO: Rename to something understandable
-rhot :: Double -> Int -> Double -> Double
-rhot tau count kap = (tau + fromIntegral count) ** (- kap)
+(?) :: a -> String -> a
+(?) = flip trace
+infixr 1 ?
