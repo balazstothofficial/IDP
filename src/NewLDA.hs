@@ -81,14 +81,7 @@ updateModel = incrementUpdateCounter
         numberOfUpdates = Model.numberOfUpdates model
 
 randomTopics :: StdGen -> Int -> [Int]
-randomTopics randomGenerator numberOfTopics = topic : topics
-  where
-    (topic, nextRandomGenerator) = randomTopic randomGenerator numberOfTopics
-
-    topics = randomTopics nextRandomGenerator numberOfTopics
-
-randomTopic :: StdGen -> Int -> (Int, StdGen)
-randomTopic randomGenerator numberOfTopics = randomR range randomGenerator
+randomTopics randomGenerator numberOfTopics = randomRs range randomGenerator
   where
     range = (0, numberOfTopics)
 

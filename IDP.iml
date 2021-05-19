@@ -51,5 +51,20 @@
     <orderEntry type="library" name="ghc-boot-th-8.10.4" level="project" />
     <orderEntry type="library" name="pretty-1.1.3.6" level="project" />
     <orderEntry type="library" name="colour-2.3.5" level="project" />
+    <orderEntry type="library" name="random-fu-0.2.7.4" level="project" />
+    <orderEntry type="library" name="erf-2.0.0.0" level="project" />
+    <orderEntry type="library" name="monad-loops-0.4.3" level="project" />
+    <orderEntry type="library" name="random-shuffle-0.0.4" level="project" />
+    <orderEntry type="library" name="random-source-0.3.0.8" level="project" />
+    <orderEntry type="library" name="rvar-0.2.0.6" level="project" />
+    <orderEntry type="library" name="syb-0.7.2.1" level="project" />
+    <orderEntry type="library" name="MonadRandom-0.5.3" level="project" />
+    <orderEntry type="library" name="flexible-defaults-0.0.3" level="project" />
+    <orderEntry type="library" name="mersenne-random-pure64-0.2.2.0" level="project" />
+    <orderEntry type="library" name="mwc-random-0.14.0.0" level="project" />
+    <orderEntry type="library" name="stateref-0.3" level="project" />
+    <orderEntry type="library" name="th-extras-0.0.0.4" level="project" />
+    <orderEntry type="library" name="MonadPrompt-1.0.0.5" level="project" />
+    <orderEntry type="library" name="transformers-compat-0.6.6" level="project" />
   </component>
 </module>
