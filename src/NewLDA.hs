@@ -19,12 +19,13 @@ import Prelude hiding (words)
 
 run :: [Document] -> Int -> Int -> IO ()
 run documents numberOfTopics seed = do
-  let model = initialModel documents numberOfTopics seed
+  let topics = randomTopics (mkStdGen seed) numberOfTopics
+  let model = initialModel documents numberOfTopics topics
   putStr $ show model
   putStr $ show $ updateModel model
 
-initialModel :: [Document] -> Int -> Int -> Model
-initialModel documents numberOfTopics seed =
+initialModel :: [Document] -> Int -> [Int] -> Model
+initialModel documents numberOfTopics topics =
   Model.Model
     { Model.numberOfTopics = numberOfTopics,
       Model.numberOfWords = numberOfWords,
@@ -47,7 +48,6 @@ initialModel documents numberOfTopics seed =
     numberOfDocuments = length documents
     numberOfWords = length vocabulary
     (topicAssignments, wordTopicMap, documentTopicMap) = initializeTopicMaps numberOfTopics topics documents
-    topics = randomTopics (mkStdGen seed) numberOfTopics
 
 initializeTopicMaps :: Int -> [Int] -> [Document] -> ([[Int]], WordTopicMap, DocumentTopicMap)
 initializeTopicMaps _ _ [] = ([], Map.empty, Map.empty)

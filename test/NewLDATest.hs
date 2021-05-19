@@ -1,4 +1,7 @@
-module NewLDATest where
+module NewLDATest
+  ( initialModelTest,
+  )
+where
 
 import qualified Data.Map as Map
 import qualified Data.Matrix as Matrix
@@ -14,7 +17,7 @@ initialModelTest :: Spec
 initialModelTest = do
   describe "Initial Model" $ do
     it "Unit Test 1" $ do
-      initialModel testDocuments 3 42
+      initialModel testDocuments 3 randomTopics
         @?= Model
           { hyperParameter =
               HyperParameter
@@ -91,3 +94,6 @@ initialModelTest = do
                 [2, 3, 1, 1, 3, 2]
               ]
           }
+
+randomTopics :: [Int]
+randomTopics = [1, 1, 3, 0, 2, 1, 0, 1, 0, 1, 3, 1, 2, 0, 2, 3, 1, 1, 3, 2, 0]
