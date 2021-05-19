@@ -2,7 +2,6 @@ module NewLDA
   ( Model (Model),
     initialModel,
     run,
-    randomTopic,
   )
 where
 
@@ -18,14 +17,14 @@ import System.Random
 import Vocabulary
 import Prelude hiding (words)
 
-run :: [Document] -> Int -> IO ()
-run documents numberOfTopics = do
-  let model = initialModel documents numberOfTopics
+run :: [Document] -> Int -> Int -> IO ()
+run documents numberOfTopics seed = do
+  let model = initialModel documents numberOfTopics seed
   putStr $ show model
   putStr $ show $ updateModel model
 
-initialModel :: [Document] -> Int -> Model
-initialModel documents numberOfTopics =
+initialModel :: [Document] -> Int -> Int -> Model
+initialModel documents numberOfTopics seed =
   Model.Model
     { Model.numberOfTopics = numberOfTopics,
       Model.numberOfWords = numberOfWords,
@@ -47,26 +46,32 @@ initialModel documents numberOfTopics =
     vocabulary = Vocabulary.fromDocuments documents
     numberOfDocuments = length documents
     numberOfWords = length vocabulary
-    (topicAssignments, wordTopicMap, documentTopicMap, _) = initializeTopicMaps (mkStdGen 42) numberOfTopics documents
+    (topicAssignments, wordTopicMap, documentTopicMap) = initializeTopicMaps numberOfTopics topics documents
+    topics = randomTopics (mkStdGen seed) numberOfTopics
 
-initializeTopicMaps :: StdGen -> Int -> [Document] -> ([[Int]], WordTopicMap, DocumentTopicMap, StdGen)
-initializeTopicMaps rGen _ [] = ([], Map.empty, Map.empty, rGen)
-initializeTopicMaps rGenerator numberOfTopics (document : documents) =
-  let (t', nw', nd', gen') = assignRandomTopics rGenerator (Document.words document) Map.empty Map.empty
-   in let (ts, nw, nd, gen'') = initializeTopicMaps gen' numberOfTopics documents
-       in (t' : ts, Map.unionWith (+) nw' nw, Map.union nd' nd, gen'')
+initializeTopicMaps :: Int -> [Int] -> [Document] -> ([[Int]], WordTopicMap, DocumentTopicMap)
+initializeTopicMaps _ _ [] = ([], Map.empty, Map.empty)
+initializeTopicMaps numberOfTopics topics (document : documents) =
+  let (topicAssignments', wordTopicMap', documentTopicMap') = initializeTopicMaps numberOfTopics nextTopics documents
+   in ( fmap snd assignedTopics : topicAssignments',
+        Map.unionWith (+) wordTopicMap wordTopicMap',
+        Map.union documentTopicMap documentTopicMap'
+      )
   where
-    assignRandomTopics :: StdGen -> [String] -> WordTopicMap -> DocumentTopicMap -> ([Int], WordTopicMap, DocumentTopicMap, StdGen)
-    assignRandomTopics randomGenerator words wordTopicMap documentTopicMap = case words of
-      [] -> ([], wordTopicMap, documentTopicMap, randomGenerator)
-      (word : otherWords) -> case assignRandomTopics nextRandomGenerator otherWords wordTopicMap documentTopicMap of
-        (z', nw', nd', _) -> (topic : z', Map.alter increase (word, topic) nw', Map.alter increase (document, topic) nd', nextRandomGenerator)
-      where
-        (topic, nextRandomGenerator) = randomTopic randomGenerator numberOfTopics
+    nextTopics = drop (length $ Document.words document) topics
 
-        increase :: Maybe Int -> Maybe Int
-        increase Nothing = Just 1
-        increase (Just x) = Just (x + 1)
+    assignedTopics = zip (Document.words document) topics
+
+    wordTopicMap = Map.fromListWith (+) $ assignOne assignedTopics
+
+    documentTopicMap = Map.fromListWith (+) $ assignOne assignedDocuments
+      where
+        assignedDocuments = map assignToDocument assignedTopics
+        assignToDocument (_, topic) = (document, topic)
+
+    assignOne xs = map assign xs
+      where
+        assign x = (x, 1)
 
 updateModel :: Model -> Model
 updateModel = incrementUpdateCounter
@@ -75,6 +80,13 @@ updateModel = incrementUpdateCounter
       where
         numberOfUpdates = Model.numberOfUpdates model
 
+randomTopics :: StdGen -> Int -> [Int]
+randomTopics randomGenerator numberOfTopics = topic : topics
+  where
+    (topic, nextRandomGenerator) = randomTopic randomGenerator numberOfTopics
+
+    topics = randomTopics nextRandomGenerator numberOfTopics
+
 randomTopic :: StdGen -> Int -> (Int, StdGen)
 randomTopic randomGenerator numberOfTopics = randomR range randomGenerator
   where
@@ -82,4 +94,5 @@ randomTopic randomGenerator numberOfTopics = randomR range randomGenerator
 
 (?) :: a -> String -> a
 (?) = flip trace
+
 infixr 1 ?
