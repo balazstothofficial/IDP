@@ -1,4 +1,4 @@
-module NewLDATest
+module LDATest
   ( initialModelTest,
   )
 where
@@ -8,7 +8,7 @@ import qualified Data.Matrix as Matrix
 import qualified Data.Set as Set
 import HyperParameter
 import Model
-import NewLDA
+import LDA
 import Test.HUnit
 import Test.Hspec
 import TestData
@@ -28,6 +28,7 @@ initialModelTest = do
             numberOfWords = 16,
             numberOfDocuments = 4,
             numberOfUpdates = 0,
+            documents = testDocuments,
             theta = Matrix.zero 4 3,
             phi = Matrix.zero 3 16,
             vocabulary =

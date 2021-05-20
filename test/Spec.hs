@@ -1,5 +1,5 @@
 import DocumentTest
-import NewLDATest
+import LDATest
 import Test.Hspec
 
 main :: IO ()

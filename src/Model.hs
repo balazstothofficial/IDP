@@ -7,6 +7,7 @@ module Model
     numberOfWords,
     numberOfDocuments,
     numberOfUpdates,
+    documents,
     vocabulary,
     theta,
     phi,
@@ -28,6 +29,7 @@ data Model = Model
     numberOfWords :: Int,
     numberOfDocuments :: Int,
     numberOfUpdates :: Int,
+    documents :: [Document],
     -- TODO: Find better names:
     theta :: Matrix Double, -- Size: NumberOfDocuments x NumberOfTopics
     phi :: Matrix Double, -- Size: NumberOfTopics x NumberOfWords

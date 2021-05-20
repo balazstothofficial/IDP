@@ -1,7 +1,7 @@
 module Main where
 
 import InterviewReader
-import NewLDA
+import LDA
 import TestData
 
 main :: IO ()
