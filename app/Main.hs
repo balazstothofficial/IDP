@@ -1,9 +1,11 @@
 module Main where
 
 import InterviewReader
+import LDA
+import TestData
 
 main :: IO ()
-main = readInterviews directory >>= print
+main = run testDocuments 10 69
 
 directory :: Directory
 directory = Relative "interviews"
