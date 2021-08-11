@@ -21,9 +21,6 @@ data Input = Input
     words :: [String]
   }
 
-instance DocumentFactory [String] where
-  create words = create (Input "" words)
-
 instance DocumentFactory Input where
   create Input {..} =
     Document

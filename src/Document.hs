@@ -1,11 +1,11 @@
 module Document
   ( Document (..),
-    WordCountMap
+    WordCountMap,
   )
 where
 
 import Data.Map (Map)
-import Prelude hiding (lookup, words)
+import Prelude hiding (words)
 
 data Document = Document
   { title :: String,
@@ -13,12 +13,12 @@ data Document = Document
     wordCounts :: WordCountMap
   }
   deriving (Show)
-  
--- TODO: Not completely safe
-instance Eq Document where
-  (==) first second = title first == title second
-  
-instance Ord Document where
-  (<=) first second = title first <= title second
 
 type WordCountMap = Map String Int
+
+-- TODO: Use secure id
+instance Eq Document where
+  (==) first second = title first == title second
+
+instance Ord Document where
+  (<=) first second = title first <= title second

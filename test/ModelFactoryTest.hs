@@ -14,7 +14,7 @@ import TestData
 
 createModels :: Spec
 createModels = do
-  describe "Initial Model" $ do
+  describe "Create Models" $ do
     it "Unit Test 1" $ do
       create
         Input
