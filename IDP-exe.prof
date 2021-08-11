@@ -1,0 +1,519 @@
+	Tue Aug 10 17:47 2021 Time and Allocation Profiling Report  (Final)
+
+	   IDP-exe +RTS -N -p -RTS
+
+	total time  =       90.11 secs   (307278 ticks @ 1000 us, 12 processors)
+	total alloc = 2,795,482,312 bytes  (excludes profiling overheads)
+
+COST CENTRE                      MODULE                    SRC                                                %time %alloc
+
+count                            LDAEstimator              src/LDAEstimator.hs:(118,1)-(120,52)                75.2    0.6
+count.f                          LDAEstimator              src/LDAEstimator.hs:120:5-52                        18.5    0.0
+multinomialSampling.sampling     LDAEstimator              src/LDAEstimator.hs:(109,5)-(115,45)                 2.1    0.3
+fromDocuments                    Vocabulary                src/Vocabulary.hs:(15,1)-(17,30)                     1.3    0.2
+computePhi.fill.isTopic          LDAEstimator              src/LDAEstimator.hs:141:9-45                         1.2    0.0
+>>=                              Data.Vector.Fusion.Util   Data/Vector/Fusion/Util.hs:36:3-18                   0.1   24.6
+showsPrec                        Document                  src/Document.hs:15:13-16                             0.1   13.8
+sample.inputModel                LDAEstimator              src/LDAEstimator.hs:(75,5)-(81,9)                    0.1    2.4
+show                             Model                     src/Model.hs:(49,3)-(73,16)                          0.0   17.7
+sample.outputModel               LDAEstimator              src/LDAEstimator.hs:(65,5)-(71,9)                    0.0    2.9
+multinomialSampling              LDAEstimator              src/LDAEstimator.hs:(98,1)-(115,45)                  0.0    5.2
+prettyMatrix                     Data.Matrix               Data/Matrix.hs:(133,1)-(143,18)                      0.0   10.4
+initializeTopicMaps.wordTopicMap ModelFactory              src/ModelFactory.hs:64:5-66                          0.0    1.6
+randomR                          System.Random             System/Random.hs:409:3-27                            0.0    2.0
+stdNext                          System.Random             System/Random.hs:(518,1)-(528,64)                    0.0    1.8
+randomIvalInteger                System.Random             System/Random.hs:(468,1)-(489,76)                    0.0    1.4
+countWords.recurse               DocumentFactory           src/DocumentFactory.hs:76:5-73                       0.0    1.1
+breakDelim                       Data.List.Split.Internals src/Data/List/Split/Internals.hs:(151,1)-(156,36)    0.0    1.9
+
+
+                                                                                                                                                                            individual      inherited
+COST CENTRE                                                     MODULE                            SRC                                                   no.      entries  %time %alloc   %time %alloc
+
+MAIN                                                            MAIN                              <built-in>                                            1151           0    0.0    0.2   100.0  100.0
+ CAF                                                            System.Directory                  <entire-module>                                       1320           0    0.0    0.0     0.0    0.0
+ CAF                                                            Data.Set.Internal                 <entire-module>                                       1300           0    0.0    0.0     0.0    0.0
+ CAF                                                            GHC.Conc.Signal                   <entire-module>                                       1255           0    0.0    0.0     0.0    0.0
+ CAF                                                            GHC.Float                         <entire-module>                                       1246           0    0.0    0.0     0.0    0.0
+ CAF                                                            GHC.IO.Encoding                   <entire-module>                                       1236           0    0.0    0.0     0.0    0.0
+ CAF                                                            GHC.IO.Encoding.Iconv             <entire-module>                                       1234           0    0.0    0.0     0.0    0.0
+ CAF                                                            GHC.IO.Exception                  <entire-module>                                       1228           0    0.0    0.0     0.0    0.0
+ CAF                                                            GHC.IO.FD                         <entire-module>                                       1227           0    0.0    0.0     0.0    0.0
+ CAF                                                            GHC.IO.Handle.FD                  <entire-module>                                       1225           0    0.0    0.0     0.0    0.0
+ CAF                                                            GHC.IO.Handle.Internals           <entire-module>                                       1224           0    0.0    0.0     0.0    0.0
+ CAF                                                            GHC.IO.Handle.Text                <entire-module>                                       1223           0    0.0    0.0     0.0    0.0
+ CAF                                                            GHC.Show                          <entire-module>                                       1205           0    0.0    0.0     0.0    0.0
+ CAF                                                            GHC.Event.Manager                 <entire-module>                                       1172           0    0.0    0.0     0.0    0.0
+ CAF                                                            GHC.Event.Poll                    <entire-module>                                       1170           0    0.0    0.0     0.0    0.0
+ CAF                                                            GHC.Event.Thread                  <entire-module>                                       1169           0    0.0    0.0     0.0    0.0
+ CAF                                                            GHC.Integer.Type                  <entire-module>                                       1163           0    0.0    0.0     0.0    0.0
+ CAF:$fApplicativeBox_$cpure                                    Data.Vector.Fusion.Util           Data/Vector/Fusion/Util.hs:45:3-6                     1896           0    0.0    0.0     0.0    0.0
+  pure                                                          Data.Vector.Fusion.Util           Data/Vector/Fusion/Util.hs:45:3-12                    2544           1    0.0    0.0     0.0    0.0
+ CAF:$fApplicativeId4                                           Data.Vector.Fusion.Util           <no location info>                                    1893           0    0.0    0.0     0.0    0.0
+  pure                                                          Data.Vector.Fusion.Util           Data/Vector/Fusion/Util.hs:31:3-11                    2539           1    0.0    0.0     0.0    0.0
+ CAF:$fDocumentFactoryInterview2                                DocumentFactory                   <no location info>                                    2227           0    0.0    0.0     0.0    0.0
+ CAF:$fDocumentFactoryInterview4                                DocumentFactory                   <no location info>                                    2226           0    0.0    0.0     0.0    0.0
+  create                                                        DocumentFactory                   src/DocumentFactory.hs:(36,3)-(43,46)                 2348           0    0.0    0.0     0.0    0.0
+   splitOn                                                      Data.List.Split.Internals         src/Data/List/Split/Internals.hs:421:1-42             2349           0    0.0    0.0     0.0    0.0
+    dropDelims                                                  Data.List.Split.Internals         src/Data/List/Split/Internals.hs:295:1-39             2351           1    0.0    0.0     0.0    0.0
+ CAF:$fDocumentFactoryInterview5                                DocumentFactory                   <no location info>                                    2225           0    0.0    0.0     0.0    0.0
+  create                                                        DocumentFactory                   src/DocumentFactory.hs:(36,3)-(43,46)                 2360           0    0.0    0.0     0.0    0.0
+   splitOn                                                      Data.List.Split.Internals         src/Data/List/Split/Internals.hs:421:1-42             2361           0    0.0    0.0     0.0    0.0
+    onSublist                                                   Data.List.Split.Internals         src/Data/List/Split/Internals.hs:278:1-72             2362           0    0.0    0.0     0.0    0.0
+ CAF:$fInterviewReaderDirectory1                                InterviewReader                   <no location info>                                    2271           0    0.0    0.0     0.0    0.0
+  readInterviews                                                InterviewReader                   src/InterviewReader.hs:35:3-61                        2304           1    0.0    0.0     0.0    0.0
+ CAF:$fInterviewReaderDirectory4                                InterviewReader                   <no location info>                                    2269           0    0.0    0.0     0.0    0.0
+  readInterview                                                 InterviewReader                   src/InterviewReader.hs:(38,3)-(41,46)                 2593           0    0.0    0.0     0.0    0.0
+   readInterview.splitPath                                      InterviewReader                   src/InterviewReader.hs:41:7-46                        2594           0    0.0    0.0     0.0    0.0
+    splitOn                                                     Data.List.Split.Internals         src/Data/List/Split/Internals.hs:421:1-42             2595           0    0.0    0.0     0.0    0.0
+     dropDelims                                                 Data.List.Split.Internals         src/Data/List/Split/Internals.hs:295:1-39             2596           1    0.0    0.0     0.0    0.0
+ CAF:$fInterviewReaderDirectory6                                InterviewReader                   <no location info>                                    2268           0    0.0    0.0     0.0    0.0
+  readInterview                                                 InterviewReader                   src/InterviewReader.hs:(38,3)-(41,46)                 2605           0    0.0    0.0     0.0    0.0
+   readInterview.splitPath                                      InterviewReader                   src/InterviewReader.hs:41:7-46                        2606           0    0.0    0.0     0.0    0.0
+    splitOn                                                     Data.List.Split.Internals         src/Data/List/Split/Internals.hs:421:1-42             2607           0    0.0    0.0     0.0    0.0
+     onSublist                                                  Data.List.Split.Internals         src/Data/List/Split/Internals.hs:278:1-72             2608           0    0.0    0.0     0.0    0.0
+ CAF:$fMonadBox_$creturn                                        Data.Vector.Fusion.Util           Data/Vector/Fusion/Util.hs:49:3-8                     1897           0    0.0    0.0     0.0    0.0
+  return                                                        Data.Vector.Fusion.Util           Data/Vector/Fusion/Util.hs:49:3-15                    2543           1    0.0    0.0     0.0    0.0
+ CAF:$fMonadId1                                                 Data.Vector.Fusion.Util           <no location info>                                    1895           0    0.0    0.0     0.0    0.0
+  return                                                        Data.Vector.Fusion.Util           Data/Vector/Fusion/Util.hs:35:3-15                    2538           1    0.0    0.0     0.0    0.0
+ CAF:$fPrimMonadST1_r3mv                                        Control.Monad.Primitive           <no location info>                                    1436           0    0.0    0.0     0.0    0.0
+  primitive                                                     Control.Monad.Primitive           Control/Monad/Primitive.hs:210:3-16                   2547           1    0.0    0.0     0.0    0.0
+ CAF:$fRandomDouble3                                            System.Random                     <no location info>                                    2194           0    0.0    0.0     0.0    0.0
+  random                                                        System.Random                     System/Random.hs:(410,3)-(418,24)                     2477           0    0.0    0.0     0.0    0.0
+   random.twoto53                                               System.Random                     System/Random.hs:417:5-38                             2478           0    0.0    0.0     0.0    0.0
+ CAF:$fRandomDouble_$s$crandomR                                 System.Random                     System/Random.hs:409:3-9                              2202           0    0.0    0.0     0.0    0.0
+  randomR                                                       System.Random                     System/Random.hs:409:3-27                             2437           1    0.0    0.0     0.0    0.0
+ CAF:$fRandomGenStdGen_$cnext                                   System.Random                     System/Random.hs:218:3-6                              2118           0    0.0    0.0     0.0    0.0
+  next                                                          System.Random                     System/Random.hs:218:3-17                             2392           1    0.0    0.0     0.0    0.0
+ CAF:$fShowDocument11                                           Document                          <no location info>                                    2264           0    0.0    0.0     0.0    0.0
+ CAF:$fShowDocument3                                            Document                          <no location info>                                    2263           0    0.0    0.0     0.0    0.0
+ CAF:$fShowDocument5                                            Document                          <no location info>                                    2267           0    0.0    0.0     0.0    0.0
+ CAF:$fShowDocument7                                            Document                          <no location info>                                    2266           0    0.0    0.0     0.0    0.0
+ CAF:$fShowDocument9                                            Document                          <no location info>                                    2265           0    0.0    0.0     0.0    0.0
+ CAF:$fShowHyperParameter3                                      HyperParameter                    <no location info>                                    2255           0    0.0    0.0     0.0    0.0
+ CAF:$fShowHyperParameter5                                      HyperParameter                    <no location info>                                    2254           0    0.0    0.0     0.0    0.0
+ CAF:$fShowHyperParameter7                                      HyperParameter                    <no location info>                                    2253           0    0.0    0.0     0.0    0.0
+ CAF:$fShowHyperParameter9                                      HyperParameter                    <no location info>                                    2252           0    0.0    0.0     0.0    0.0
+ CAF:appendWords_r6hx                                           Vocabulary                        src/Vocabulary.hs:17:5-15                             2261           0    0.0    0.0     0.0    0.0
+  fromDocuments                                                 Vocabulary                        src/Vocabulary.hs:(15,1)-(17,30)                      2493           0    0.0    0.0     0.0    0.0
+   fromDocuments.appendWords                                    Vocabulary                        src/Vocabulary.hs:17:5-30                             2494           1    0.0    0.0     0.0    0.0
+ CAF:b_rgaQ                                                     System.Random                     System/Random.hs:473:8                                2128           0    0.0    0.0     0.0    0.0
+  randomIvalInteger                                             System.Random                     System/Random.hs:(468,1)-(489,76)                     2420           0    0.0    0.0     0.0    0.0
+   randomIvalInteger.b                                          System.Random                     System/Random.hs:473:8-54                             2421           1    0.0    0.0     0.0    0.0
+ CAF:defaultSplitter                                            Data.List.Split.Internals         src/Data/List/Split/Internals.hs:58:1-15              2217           0    0.0    0.0     0.0    0.0
+  defaultSplitter                                               Data.List.Split.Internals         src/Data/List/Split/Internals.hs:(58,1)-(63,28)       2350           1    0.0    0.0     0.0    0.0
+ CAF:directory                                                  Main                              app/Main.hs:16:1-9                                    2299           0    0.0    0.0     0.0    0.0
+  directory                                                     Main                              app/Main.hs:16:1-33                                   2307           1    0.0    0.0     0.0    0.0
+ CAF:directory1                                                 Main                              <no location info>                                    2298           0    0.0    0.0     0.0    0.0
+ CAF:doBoundsChecks                                             Data.Vector.Internal.Check        Data/Vector/Internal/Check.hs:55:1-14                 1898           0    0.0    0.0     0.0    0.0
+  doBoundsChecks                                                Data.Vector.Internal.Check        Data/Vector/Internal/Check.hs:55:1-21                 2517           1    0.0    0.0     0.0    0.0
+ CAF:doInternalChecks                                           Data.Vector.Internal.Check        Data/Vector/Internal/Check.hs:71:1-16                 1900           0    0.0    0.0     0.0    0.0
+  doInternalChecks                                              Data.Vector.Internal.Check        Data/Vector/Internal/Check.hs:71:1-24                 2532           1    0.0    0.0     0.0    0.0
+ CAF:doUnsafeChecks                                             Data.Vector.Internal.Check        Data/Vector/Internal/Check.hs:64:1-14                 1899           0    0.0    0.0     0.0    0.0
+  doUnsafeChecks                                                Data.Vector.Internal.Check        Data/Vector/Internal/Check.hs:64:1-22                 2518           1    0.0    0.0     0.0    0.0
+ CAF:ds_rgaM                                                    System.Random                     <no location info>                                    2124           0    0.0    0.0     0.0    0.0
+  randomIvalInteger                                             System.Random                     System/Random.hs:(468,1)-(489,76)                     2416           0    0.0    0.0     0.0    0.0
+   randomIvalInteger.(...)                                      System.Random                     System/Random.hs:472:8-36                             2417           1    0.0    0.0     0.0    0.0
+    genRange                                                    System.Random                     System/Random.hs:219:3-23                             2418           1    0.0    0.0     0.0    0.0
+ CAF:fromDocuments                                              Vocabulary                        src/Vocabulary.hs:15:1-13                             2262           0    0.0    0.0     0.0    0.0
+  fromDocuments                                                 Vocabulary                        src/Vocabulary.hs:(15,1)-(17,30)                      2491           1    0.0    0.0     0.0    0.0
+ CAF:genhi_rgaP                                                 System.Random                     System/Random.hs:472:16-20                            2127           0    0.0    0.0     0.0    0.0
+  randomIvalInteger                                             System.Random                     System/Random.hs:(468,1)-(489,76)                     2422           0    0.0    0.0     0.0    0.0
+   randomIvalInteger.genhi                                      System.Random                     System/Random.hs:472:8-36                             2423           1    0.0    0.0     0.0    0.0
+ CAF:genlo_rgaN                                                 System.Random                     System/Random.hs:472:9-13                             2125           0    0.0    0.0     0.0    0.0
+  randomIvalInteger                                             System.Random                     System/Random.hs:(468,1)-(489,76)                     2414           0    0.0    0.0     0.0    0.0
+   randomIvalInteger.genlo                                      System.Random                     System/Random.hs:472:8-36                             2415           1    0.0    0.0     0.0    0.0
+ CAF:lvl193_r4kfs                                               Data.Matrix                       <no location info>                                    1951           0    0.0    0.0     0.0    0.0
+ CAF:lvl195_r4kfu                                               Data.Matrix                       <no location info>                                    1952           0    0.0    0.0     0.0    0.0
+ CAF:lvl197_r4kfw                                               Data.Matrix                       <no location info>                                    1953           0    0.0    0.0     0.0    0.0
+ CAF:lvl199_r4kfy                                               Data.Matrix                       <no location info>                                    1954           0    0.0    0.0     0.0    0.0
+ CAF:lvl201_r4kfA                                               Data.Matrix                       <no location info>                                    1955           0    0.0    0.0     0.0    0.0
+ CAF:lvl215_r4kfO                                               Data.Matrix                       <no location info>                                    1964           0    0.0    0.0     0.0    0.0
+ CAF:lvl24_r8md                                                 Model                             <no location info>                                    2257           0    0.0    0.0     0.0    0.0
+ CAF:lvl7_rgaO                                                  System.Random                     <no location info>                                    2126           0    0.0    0.0     0.0    0.0
+  randomIvalInteger                                             System.Random                     System/Random.hs:(468,1)-(489,76)                     2411           0    0.0    0.0     0.0    0.0
+   randomIvalInteger.f                                          System.Random                     System/Random.hs:(486,8)-(489,76)                     2412           0    0.0    0.0     0.0    0.0
+    randomIvalInteger.f.v'                                      System.Random                     System/Random.hs:489:25-76                            2413           0    0.0    0.0     0.0    0.0
+ CAF:main1                                                      Main                              <no location info>                                    2300           0    0.0    0.0     0.0    0.0
+  main                                                          Main                              app/Main.hs:10:1-110                                  2302           1    0.0    0.0     0.0    0.0
+ CAF:q_rgaF                                                     System.Random                     System/Random.hs:481:8                                2115           0    0.0    0.0     0.0    0.0
+  randomIvalInteger                                             System.Random                     System/Random.hs:(468,1)-(489,76)                     2386           0    0.0    0.0     0.0    0.0
+   randomIvalInteger.q                                          System.Random                     System/Random.hs:481:8-15                             2387           1    0.0    0.0     0.0    0.0
+ CAF:rand_rpuI                                                  LDARunner                         <no location info>                                    2251           0    0.0    0.0     0.0    0.0
+  randomFactors                                                 LDARunner                         src/LDARunner.hs:(52,1)-(54,35)                       2434           0    0.0    0.0     0.0    0.0
+   randomRs                                                     System.Random                     System/Random.hs:310:3-76                             2435           0    0.0    0.0     0.0    0.0
+    randomRs.\                                                  System.Random                     System/Random.hs:310:42-75                            2436           0    0.0    0.0     0.0    0.0
+ CAF:stdRange                                                   System.Random                     System/Random.hs:514:1-8                              2123           0    0.0    0.0     0.0    0.0
+  stdRange                                                      System.Random                     System/Random.hs:514:1-26                             2419           1    0.0    0.0     0.0    0.0
+ main                                                           Main                              app/Main.hs:10:1-110                                  2303           0    0.0    0.1   100.0   99.8
+  main.\                                                        Main                              app/Main.hs:10:60-102                                 2318           1    0.0    0.0    99.6   26.0
+   run                                                          LDARunner                         src/LDARunner.hs:(23,3)-(43,13)                       2319           1    0.0    0.0    99.6   26.0
+    run.estimatedModel                                          LDARunner                         src/LDARunner.hs:(37,7)-(43,13)                       2322           1    0.0    0.0    98.1   13.5
+     estimate                                                   LDAEstimator                      src/LDAEstimator.hs:(26,3)-(46,73)                    2323           2    0.0    0.0    98.1   13.5
+      computePhi                                                LDAEstimator                      src/LDAEstimator.hs:(124,1)-(141,45)                  2485           1    0.0    0.0     9.8    0.3
+       computePhi.beta                                          LDAEstimator                      src/LDAEstimator.hs:132:5-59                          2725           1    0.0    0.0     0.0    0.0
+        beta                                                    HyperParameter                    src/HyperParameter.hs:16:5-8                          2727           1    0.0    0.0     0.0    0.0
+        hyperParameter                                          Model                             src/Model.hs:27:5-18                                  2726           1    0.0    0.0     0.0    0.0
+       computePhi.numberOfTopics                                LDAEstimator                      src/LDAEstimator.hs:129:5-47                          2705           1    0.0    0.0     0.0    0.0
+        numberOfTopics                                          Model                             src/Model.hs:28:5-18                                  2706           1    0.0    0.0     0.0    0.0
+       computePhi.numberOfWords                                 LDAEstimator                      src/LDAEstimator.hs:128:5-45                          2703           1    0.0    0.0     0.0    0.0
+        numberOfWords                                           Model                             src/Model.hs:29:5-17                                  2704           1    0.0    0.0     0.0    0.0
+       computePhi.phi                                           LDAEstimator                      src/LDAEstimator.hs:126:5-57                          2707           1    0.0    0.1     9.8    0.3
+        basicUnsafeWrite                                        Data.Vector.Mutable               Data/Vector/Mutable.hs:120:3-65                       2712       49392    0.0    0.0     0.0    0.0
+         primitive                                              Control.Monad.Primitive           Control/Monad/Primitive.hs:210:3-16                   2713       49392    0.0    0.0     0.0    0.0
+          marray#                                               Data.Primitive.Array              Data/Primitive/Array.hs:104:5-11                      2714       49392    0.0    0.0     0.0    0.0
+        computePhi.fill                                         LDAEstimator                      src/LDAEstimator.hs:(135,5)-(141,45)                  2718       49392    0.0    0.1     9.8    0.1
+         computePhi.fill.word                                   LDAEstimator                      src/LDAEstimator.hs:140:9-52                          2722       49392    0.0    0.0     0.0    0.0
+         computePhi.fill.wordCount                              LDAEstimator                      src/LDAEstimator.hs:139:9-68                          2719       49392    0.0    0.0     0.0    0.0
+         count                                                  LDAEstimator                      src/LDAEstimator.hs:(118,1)-(120,52)                  2728       49392    6.7    0.1     9.8    0.1
+          count.f                                               LDAEstimator                      src/LDAEstimator.hs:120:5-52                          2729  1068645312    1.9    0.0     3.1    0.0
+           computePhi.fill.isTopic                              LDAEstimator                      src/LDAEstimator.hs:141:9-45                          2730  1068645312    1.2    0.0     1.2    0.0
+        basicInitialize                                         Data.Vector.Mutable               Data/Vector/Mutable.hs:108:3-31                       2711           1    0.0    0.0     0.0    0.0
+        basicUnsafeFreeze                                       Data.Vector                       Data/Vector.hs:(276,3)-(277,47)                       2715           1    0.0    0.0     0.0    0.0
+         primitive                                              Control.Monad.Primitive           Control/Monad/Primitive.hs:210:3-16                   2716           1    0.0    0.0     0.0    0.0
+          marray#                                               Data.Primitive.Array              Data/Primitive/Array.hs:104:5-11                      2717           1    0.0    0.0     0.0    0.0
+        basicUnsafeNew                                          Data.Vector.Mutable               Data/Vector/Mutable.hs:(101,3)-(104,32)               2709           1    0.0    0.0     0.0    0.0
+         primitive                                              Control.Monad.Primitive           Control/Monad/Primitive.hs:210:3-16                   2710           1    0.0    0.0     0.0    0.0
+       computePhi.vocabulary                                    LDAEstimator                      src/LDAEstimator.hs:131:5-39                          2723           1    0.0    0.0     0.0    0.0
+        vocabulary                                              Model                             src/Model.hs:36:5-14                                  2724           1    0.0    0.0     0.0    0.0
+       computePhi.wordTopicMap                                  LDAEstimator                      src/LDAEstimator.hs:130:5-43                          2720           1    0.0    0.0     0.0    0.0
+        wordTopicMap                                            Model                             src/Model.hs:37:5-16                                  2721           1    0.0    0.0     0.0    0.0
+      computeTheta                                              LDAEstimator                      src/LDAEstimator.hs:(144,1)-(161,55)                  2484           1    0.0    0.0     0.0    0.0
+       computeTheta.alpha                                       LDAEstimator                      src/LDAEstimator.hs:152:5-61                          2681           1    0.0    0.0     0.0    0.0
+        alpha                                                   HyperParameter                    src/HyperParameter.hs:15:5-9                          2683           1    0.0    0.0     0.0    0.0
+        hyperParameter                                          Model                             src/Model.hs:27:5-18                                  2682           1    0.0    0.0     0.0    0.0
+       computeTheta.documentTopicMap                            LDAEstimator                      src/LDAEstimator.hs:151:5-51                          2573           1    0.0    0.0     0.0    0.0
+        documentTopicMap                                        Model                             src/Model.hs:38:5-20                                  2574           1    0.0    0.0     0.0    0.0
+       computeTheta.documents                                   LDAEstimator                      src/LDAEstimator.hs:150:5-37                          2570           1    0.0    0.0     0.0    0.0
+        documents                                               Model                             src/Model.hs:32:5-13                                  2571           1    0.0    0.0     0.0    0.0
+       computeTheta.numberOfDocuments                           LDAEstimator                      src/LDAEstimator.hs:148:5-53                          2506           1    0.0    0.0     0.0    0.0
+        numberOfDocuments                                       Model                             src/Model.hs:30:5-21                                  2507           1    0.0    0.0     0.0    0.0
+       computeTheta.numberOfTopics                              LDAEstimator                      src/LDAEstimator.hs:149:5-47                          2508           1    0.0    0.0     0.0    0.0
+        numberOfTopics                                          Model                             src/Model.hs:28:5-18                                  2509           1    0.0    0.0     0.0    0.0
+       computeTheta.theta                                       LDAEstimator                      src/LDAEstimator.hs:146:5-63                          2510           1    0.0    0.0     0.0    0.0
+        basicUnsafeWrite                                        Data.Vector.Mutable               Data/Vector/Mutable.hs:120:3-65                       2522          84    0.0    0.0     0.0    0.0
+         primitive                                              Control.Monad.Primitive           Control/Monad/Primitive.hs:210:3-16                   2523          84    0.0    0.0     0.0    0.0
+          marray#                                               Data.Primitive.Array              Data/Primitive/Array.hs:104:5-11                      2524          84    0.0    0.0     0.0    0.0
+        computeTheta.fill                                       LDAEstimator                      src/LDAEstimator.hs:(155,5)-(161,55)                  2568          84    0.0    0.0     0.0    0.0
+         computeTheta.fill.document                             LDAEstimator                      src/LDAEstimator.hs:160:9-51                          2569          84    0.0    0.0     0.0    0.0
+         computeTheta.fill.documentSize                         LDAEstimator                      src/LDAEstimator.hs:161:9-55                          2684          84    0.0    0.0     0.0    0.0
+          words                                                 Document                          src/Document.hs:12:5-9                                2685          84    0.0    0.0     0.0    0.0
+         computeTheta.fill.topicCount                           LDAEstimator                      src/LDAEstimator.hs:159:9-77                          2572          84    0.0    0.0     0.0    0.0
+          ==                                                    Document                          src/Document.hs:19:3-49                               2677         492    0.0    0.0     0.0    0.0
+           title                                                Document                          src/Document.hs:11:5-9                                2678         984    0.0    0.0     0.0    0.0
+          <=                                                    Document                          src/Document.hs:22:3-49                               2679         279    0.0    0.0     0.0    0.0
+           title                                                Document                          src/Document.hs:11:5-9                                2680         558    0.0    0.0     0.0    0.0
+        basicInitialize                                         Data.Vector.Mutable               Data/Vector/Mutable.hs:108:3-31                       2521           1    0.0    0.0     0.0    0.0
+        basicUnsafeFreeze                                       Data.Vector                       Data/Vector.hs:(276,3)-(277,47)                       2525           1    0.0    0.0     0.0    0.0
+         primitive                                              Control.Monad.Primitive           Control/Monad/Primitive.hs:210:3-16                   2526           1    0.0    0.0     0.0    0.0
+          marray#                                               Data.Primitive.Array              Data/Primitive/Array.hs:104:5-11                      2527           1    0.0    0.0     0.0    0.0
+        basicUnsafeNew                                          Data.Vector.Mutable               Data/Vector/Mutable.hs:(101,3)-(104,32)               2519           1    0.0    0.0     0.0    0.0
+         primitive                                              Control.Monad.Primitive           Control/Monad/Primitive.hs:210:3-16                   2520           1    0.0    0.0     0.0    0.0
+      estimate.(...)                                            LDAEstimator                      src/LDAEstimator.hs:40:7-107                          2327           1    0.0    0.0    88.3   13.3
+       sampleDocuments                                          LDAEstimator                      src/LDAEstimator.hs:(49,1)-(56,105)                   2328          15    0.0    0.0    88.3   13.3
+        sampleDocuments.(...)                                   LDAEstimator                      src/LDAEstimator.hs:56:5-105                          2338          14    0.0    0.0    88.3   13.3
+         sample                                                 LDAEstimator                      src/LDAEstimator.hs:(59,1)-(88,36)                    2371       72469    0.0    0.9    88.3   13.3
+          sample.(...)                                          LDAEstimator                      src/LDAEstimator.hs:63:5-86                           2480       72455    0.0    0.1     0.0    0.1
+          sample.inputModel                                     LDAEstimator                      src/LDAEstimator.hs:(75,5)-(81,9)                     2630       72455    0.1    2.4     0.1    2.6
+           ==                                                   Document                          src/Document.hs:19:3-49                               2658      437221    0.0    0.0     0.0    0.0
+            title                                               Document                          src/Document.hs:11:5-9                                2659      874442    0.0    0.0     0.0    0.0
+           <=                                                   Document                          src/Document.hs:22:3-49                               2660      253405    0.0    0.0     0.0    0.0
+            title                                               Document                          src/Document.hs:11:5-9                                2661      506810    0.0    0.0     0.0    0.0
+           sample.decrease                                      LDAEstimator                      src/LDAEstimator.hs:(83,5)-(85,36)                    2646      144910    0.0    0.2     0.0    0.2
+           documentTopicMap                                     Model                             src/Model.hs:38:5-20                                  2657       72455    0.0    0.0     0.0    0.0
+           wordTopicMap                                         Model                             src/Model.hs:37:5-16                                  2640       72455    0.0    0.0     0.0    0.0
+          sample.newTopic                                       LDAEstimator                      src/LDAEstimator.hs:73:5-55                           2631       72455    0.0    0.0    88.1    6.5
+           sampling                                             LDAEstimator                      src/LDAEstimator.hs:(91,1)-(95,47)                    2632       72455    0.0    0.3    88.1    6.5
+            sampling.predicate                                  LDAEstimator                      src/LDAEstimator.hs:93:5-31                           2636      252197    0.0    0.0     0.0    0.0
+            sampling.p                                          LDAEstimator                      src/LDAEstimator.hs:95:5-47                           2633       72455    0.0    0.1    88.1    6.1
+             multinomialSampling                                LDAEstimator                      src/LDAEstimator.hs:(98,1)-(115,45)                   2634       72455    0.0    5.2    88.1    6.1
+              multinomialSampling.sampling                      LDAEstimator                      src/LDAEstimator.hs:(109,5)-(115,45)                  2637      434730    2.1    0.3    88.0    0.8
+               ==                                               Document                          src/Document.hs:19:3-49                               2662     2578098    0.2    0.0     0.2    0.0
+                title                                           Document                          src/Document.hs:11:5-9                                2663     5156196    0.0    0.0     0.0    0.0
+               <=                                               Document                          src/Document.hs:22:3-49                               2664     1488230    0.0    0.0     0.0    0.0
+                title                                           Document                          src/Document.hs:11:5-9                                2665     2976460    0.0    0.0     0.0    0.0
+               count                                            LDAEstimator                      src/LDAEstimator.hs:(118,1)-(120,52)                  2650      434730   68.5    0.5    85.7    0.5
+                count.f                                         LDAEstimator                      src/LDAEstimator.hs:120:5-52                          2651  8134955886   16.7    0.0    17.2    0.0
+                 multinomialSampling.sampling.isTopic           LDAEstimator                      src/LDAEstimator.hs:115:9-45                          2652  8134955886    0.5    0.0     0.5    0.0
+               words                                            Document                          src/Document.hs:12:5-9                                2669       72455    0.0    0.0     0.0    0.0
+              multinomialSampling.alpha                         LDAEstimator                      src/LDAEstimator.hs:104:5-61                          2666       72455    0.0    0.0     0.0    0.0
+               alpha                                            HyperParameter                    src/HyperParameter.hs:15:5-9                          2668       72455    0.0    0.0     0.0    0.0
+               hyperParameter                                   Model                             src/Model.hs:27:5-18                                  2667       72455    0.0    0.0     0.0    0.0
+              multinomialSampling.beta                          LDAEstimator                      src/LDAEstimator.hs:101:5-59                          2647       72455    0.0    0.0     0.0    0.0
+               beta                                             HyperParameter                    src/HyperParameter.hs:16:5-8                          2649       72455    0.0    0.0     0.0    0.0
+               hyperParameter                                   Model                             src/Model.hs:27:5-18                                  2648       72455    0.0    0.0     0.0    0.0
+              multinomialSampling.documentTopicMap              LDAEstimator                      src/LDAEstimator.hs:107:5-51                          2655       72455    0.0    0.0     0.0    0.0
+               documentTopicMap                                 Model                             src/Model.hs:38:5-20                                  2656       72455    0.0    0.0     0.0    0.0
+              multinomialSampling.kAlpha                        LDAEstimator                      src/LDAEstimator.hs:103:5-62                          2670       72455    0.0    0.0     0.0    0.0
+               numberOfTopics                                   Model                             src/Model.hs:28:5-18                                  2671       72455    0.0    0.0     0.0    0.0
+              multinomialSampling.vBeta                         LDAEstimator                      src/LDAEstimator.hs:100:5-59                          2653       72455    0.0    0.0     0.0    0.0
+               numberOfWords                                    Model                             src/Model.hs:29:5-17                                  2654       72455    0.0    0.0     0.0    0.0
+              multinomialSampling.wordTopicMap                  LDAEstimator                      src/LDAEstimator.hs:106:5-43                          2638       72455    0.0    0.0     0.0    0.0
+               wordTopicMap                                     Model                             src/Model.hs:37:5-16                                  2639       72455    0.0    0.0     0.0    0.0
+              numberOfTopics                                    Model                             src/Model.hs:28:5-18                                  2635       72455    0.0    0.0     0.0    0.0
+            sampling.u                                          LDAEstimator                      src/LDAEstimator.hs:94:5-29                           2672       72455    0.0    0.0     0.0    0.0
+          sample.outputModel                                    LDAEstimator                      src/LDAEstimator.hs:(65,5)-(71,9)                     2481       72455    0.0    2.9     0.1    3.2
+           ==                                                   Document                          src/Document.hs:19:3-49                               2628      430708    0.0    0.0     0.0    0.0
+            title                                               Document                          src/Document.hs:11:5-9                                2629      861416    0.0    0.0     0.0    0.0
+           <=                                                   Document                          src/Document.hs:22:3-49                               2673      248080    0.0    0.0     0.0    0.0
+            title                                               Document                          src/Document.hs:11:5-9                                2674      496160    0.0    0.0     0.0    0.0
+           sample.increase                                      LDAEstimator                      src/LDAEstimator.hs:(87,5)-(88,36)                    2675      144910    0.0    0.3     0.0    0.3
+           documentTopicMap                                     Model                             src/Model.hs:38:5-20                                  2575       72455    0.0    0.0     0.0    0.0
+           wordTopicMap                                         Model                             src/Model.hs:37:5-16                                  2676       72455    0.0    0.0     0.0    0.0
+          sample.recursedModel                                  LDAEstimator                      src/LDAEstimator.hs:63:5-86                           2479       72455    0.0    0.0     0.0    0.0
+          sample.recursedTopics                                 LDAEstimator                      src/LDAEstimator.hs:63:5-86                           2740       72455    0.0    0.0     0.0    0.0
+         words                                                  Document                          src/Document.hs:12:5-9                                2339          14    0.0    0.0     0.0    0.0
+        sampleDocuments.(...)                                   LDAEstimator                      src/LDAEstimator.hs:(53,5)-(54,100)                   2334          14    0.0    0.0     0.0    0.0
+        sampleDocuments.outputModel                             LDAEstimator                      src/LDAEstimator.hs:56:5-105                          2337          14    0.0    0.0     0.0    0.0
+        sampleDocuments.outputTopics                            LDAEstimator                      src/LDAEstimator.hs:56:5-105                          2739          14    0.0    0.0     0.0    0.0
+        sampleDocuments.recursedModel                           LDAEstimator                      src/LDAEstimator.hs:(53,5)-(54,100)                   2333          14    0.0    0.0     0.0    0.0
+        sampleDocuments.recursedTopicAssignments                LDAEstimator                      src/LDAEstimator.hs:(53,5)-(54,100)                   2741          14    0.0    0.0     0.0    0.0
+       topicAssignments                                         Model                             src/Model.hs:39:5-20                                  2329           1    0.0    0.0     0.0    0.0
+      estimate.documents                                        LDAEstimator                      src/LDAEstimator.hs:42:7-39                           2324           1    0.0    0.0     0.0    0.0
+       documents                                                Model                             src/Model.hs:32:5-13                                  2325           1    0.0    0.0     0.0    0.0
+      estimate.outputModel                                      LDAEstimator                      src/LDAEstimator.hs:38:7-66                           2483           1    0.0    0.0     0.0    0.0
+      estimate.tmpModel                                         LDAEstimator                      src/LDAEstimator.hs:40:7-107                          2482           1    0.0    0.0     0.0    0.0
+      estimate.topicAssignments                                 LDAEstimator                      src/LDAEstimator.hs:40:7-107                          2738           1    0.0    0.0     0.0    0.0
+    run.factors                                                 LDARunner                         src/LDARunner.hs:35:7-40                              2430           1    0.0    0.0     0.1    6.8
+     randomFactors                                              LDARunner                         src/LDARunner.hs:(52,1)-(54,35)                       2431           1    0.0    0.0     0.1    6.8
+      randomFactors.randomGenerator                             LDARunner                         src/LDARunner.hs:54:5-35                              2452           1    0.0    0.0     0.0    0.0
+       mkStdGen                                                 System.Random                     System/Random.hs:259:1-40                             2453           1    0.0    0.0     0.0    0.0
+        mkStdGen32                                              System.Random                     System/Random.hs:(267,1)-(273,36)                     2454           1    0.0    0.0     0.0    0.0
+         mkStdGen32.(...)                                       System.Random                     System/Random.hs:272:9-39                             2456           1    0.0    0.0     0.0    0.0
+         mkStdGen32.q                                           System.Random                     System/Random.hs:272:9-39                             2459           1    0.0    0.0     0.0    0.0
+         mkStdGen32.s                                           System.Random                     System/Random.hs:271:9-45                             2457           1    0.0    0.0     0.0    0.0
+         mkStdGen32.s1                                          System.Random                     System/Random.hs:272:9-39                             2455           1    0.0    0.0     0.0    0.0
+         mkStdGen32.s2                                          System.Random                     System/Random.hs:273:9-36                             2458           1    0.0    0.0     0.0    0.0
+      randomRs                                                  System.Random                     System/Random.hs:310:3-76                             2432           1    0.0    0.0     0.1    6.8
+       randomRs.\                                               System.Random                     System/Random.hs:310:42-75                            2433           1    0.0    0.1     0.1    6.8
+        randomR                                                 System.Random                     System/Random.hs:409:3-27                             2438           0    0.0    2.0     0.1    6.7
+         random                                                 System.Random                     System/Random.hs:(410,3)-(418,24)                     2439       72455    0.0    0.0     0.0    4.7
+          random                                                System.Random                     System/Random.hs:349:64-85                            2440       72455    0.0    0.0     0.0    4.7
+           randomBounded                                        System.Random                     System/Random.hs:458:1-44                             2441       72455    0.0    0.0     0.0    4.7
+            randomR                                             System.Random                     System/Random.hs:349:34-61                            2442       72455    0.0    0.0     0.0    4.7
+             randomIvalIntegral                                 System.Random                     System/Random.hs:462:1-71                             2443       72455    0.0    0.1     0.0    4.6
+              randomIvalInteger                                 System.Random                     System/Random.hs:(468,1)-(489,76)                     2444       72455    0.0    1.0     0.0    4.6
+               randomIvalInteger.f                              System.Random                     System/Random.hs:(486,8)-(489,76)                     2447      289820    0.0    0.4     0.0    3.0
+                randomIvalInteger.f.(...)                       System.Random                     System/Random.hs:488:25-39                            2450      217365    0.0    0.0     0.0    1.9
+                 next                                           System.Random                     System/Random.hs:218:3-17                             2451           0    0.0    0.2     0.0    1.9
+                  stdNext                                       System.Random                     System/Random.hs:(518,1)-(528,64)                     2460      217365    0.0    1.4     0.0    1.7
+                   stdNext.k                                    System.Random                     System/Random.hs:522:17-38                            2463      217365    0.0    0.0     0.0    0.0
+                   stdNext.k'                                   System.Random                     System/Random.hs:526:17-38                            2466      217365    0.0    0.0     0.0    0.0
+                   stdNext.s1'                                  System.Random                     System/Random.hs:523:17-59                            2464      217365    0.0    0.0     0.0    0.0
+                   stdNext.s1''                                 System.Random                     System/Random.hs:524:17-64                            2465      217365    0.0    0.1     0.0    0.1
+                   stdNext.s2'                                  System.Random                     System/Random.hs:527:17-60                            2467      217365    0.0    0.0     0.0    0.0
+                   stdNext.s2''                                 System.Random                     System/Random.hs:528:17-64                            2468      217365    0.0    0.1     0.0    0.1
+                   stdNext.z                                    System.Random                     System/Random.hs:520:17-34                            2462      217365    0.0    0.1     0.0    0.1
+                   stdNext.z'                                   System.Random                     System/Random.hs:519:17-58                            2461      217365    0.0    0.0     0.0    0.0
+                randomIvalInteger.f.v'                          System.Random                     System/Random.hs:489:25-76                            2448      217365    0.0    0.7     0.0    0.7
+                randomIvalInteger.f.x                           System.Random                     System/Random.hs:488:25-39                            2449      217365    0.0    0.0     0.0    0.0
+                randomIvalInteger.f.g'                          System.Random                     System/Random.hs:488:25-39                            2474      217364    0.0    0.0     0.0    0.0
+               randomIvalInteger.(...)                          System.Random                     System/Random.hs:472:8-36                             2470       72455    0.0    0.0     0.0    0.0
+                genRange                                        System.Random                     System/Random.hs:219:3-23                             2471       72455    0.0    0.0     0.0    0.0
+               randomIvalInteger.b                              System.Random                     System/Random.hs:473:8-54                             2473       72455    0.0    0.2     0.0    0.2
+               randomIvalInteger.genhi                          System.Random                     System/Random.hs:472:8-36                             2472       72455    0.0    0.0     0.0    0.0
+               randomIvalInteger.genlo                          System.Random                     System/Random.hs:472:8-36                             2469       72455    0.0    0.0     0.0    0.0
+               randomIvalInteger.k                              System.Random                     System/Random.hs:482:8-20                             2445       72455    0.0    0.2     0.0    0.2
+               randomIvalInteger.magtgt                         System.Random                     System/Random.hs:483:8-21                             2446       72455    0.0    0.2     0.0    0.2
+          random.mask53                                         System.Random                     System/Random.hs:418:5-24                             2475       72455    0.0    0.0     0.0    0.0
+          random.twoto53                                        System.Random                     System/Random.hs:417:5-38                             2476       72455    0.0    0.0     0.0    0.0
+    run.initialModel                                            LDARunner                         src/LDARunner.hs:(27,7)-(33,13)                       2320           1    0.0    0.0     1.4    4.3
+     create                                                     ModelFactory                      src/ModelFactory.hs:(23,3)-(47,59)                    2321           1    0.0    0.0     1.4    4.3
+      create.(...)                                              ModelFactory                      src/ModelFactory.hs:(46,7)-(47,59)                    2331           1    0.0    0.0     0.1    3.9
+       initializeTopicMaps                                      ModelFactory                      src/ModelFactory.hs:(51,1)-(73,25)                    2332          15    0.0    0.6     0.1    3.9
+        <=                                                      Document                          src/Document.hs:22:3-49                               2626         252    0.0    0.0     0.0    0.0
+         title                                                  Document                          src/Document.hs:11:5-9                                2627         504    0.0    0.0     0.0    0.0
+        ==                                                      Document                          src/Document.hs:19:3-49                               2624         252    0.0    0.0     0.0    0.0
+         title                                                  Document                          src/Document.hs:11:5-9                                2625         504    0.0    0.0     0.0    0.0
+        initializeTopicMaps.(...)                               ModelFactory                      src/ModelFactory.hs:(53,7)-(54,63)                    2336          14    0.0    0.0     0.0    0.0
+        initializeTopicMaps.assignedTopics                      ModelFactory                      src/ModelFactory.hs:62:5-57                           2372          14    0.0    0.2     0.0    0.2
+         words                                                  Document                          src/Document.hs:12:5-9                                2373          14    0.0    0.0     0.0    0.0
+        initializeTopicMaps.documentTopicMap                    ModelFactory                      src/ModelFactory.hs:(66,5)-(69,55)                    2578          14    0.0    0.6     0.0    1.2
+         ==                                                     Document                          src/Document.hs:19:3-49                               2583      179869    0.0    0.0     0.0    0.0
+          title                                                 Document                          src/Document.hs:11:5-9                                2584      359738    0.0    0.0     0.0    0.0
+         initializeTopicMaps.assignOne                          ModelFactory                      src/ModelFactory.hs:(71,5)-(73,25)                    2580          14    0.0    0.3     0.0    0.3
+          initializeTopicMaps.assignOne.assign                  ModelFactory                      src/ModelFactory.hs:73:9-25                           2581       72455    0.0    0.0     0.0    0.0
+         initializeTopicMaps.documentTopicMap.assignedDocuments ModelFactory                      src/ModelFactory.hs:68:9-63                           2579          14    0.0    0.2     0.0    0.3
+          initializeTopicMaps.documentTopicMap.assignToDocument ModelFactory                      src/ModelFactory.hs:69:9-55                           2582       72455    0.0    0.1     0.0    0.1
+        initializeTopicMaps.documentTopicMap'                   ModelFactory                      src/ModelFactory.hs:(53,7)-(54,63)                    2577          14    0.0    0.0     0.0    0.0
+        initializeTopicMaps.wordTopicMap                        ModelFactory                      src/ModelFactory.hs:64:5-66                           2643          14    0.0    1.6     0.0    1.9
+         initializeTopicMaps.assignOne                          ModelFactory                      src/ModelFactory.hs:(71,5)-(73,25)                    2644          14    0.0    0.3     0.0    0.3
+          initializeTopicMaps.assignOne.assign                  ModelFactory                      src/ModelFactory.hs:73:9-25                           2645       72455    0.0    0.0     0.0    0.0
+        initializeTopicMaps.wordTopicMap'                       ModelFactory                      src/ModelFactory.hs:(53,7)-(54,63)                    2642          14    0.0    0.0     0.0    0.0
+        initializeTopicMaps.nextTopics                          ModelFactory                      src/ModelFactory.hs:60:5-52                           2374          13    0.0    0.0     0.0    0.0
+        initializeTopicMaps.topicAssignments'                   ModelFactory                      src/ModelFactory.hs:(53,7)-(54,63)                    2335          13    0.0    0.0     0.0    0.0
+      create.documentTopicMap                                   ModelFactory                      src/ModelFactory.hs:(46,7)-(47,59)                    2576           1    0.0    0.0     0.0    0.0
+      create.numberOfDocuments                                  ModelFactory                      src/ModelFactory.hs:44:7-42                           2500           1    0.0    0.0     0.0    0.0
+      create.numberOfWords                                      ModelFactory                      src/ModelFactory.hs:45:7-39                           2489           1    0.0    0.0     0.0    0.0
+      create.topicAssignments                                   ModelFactory                      src/ModelFactory.hs:(46,7)-(47,59)                    2330           1    0.0    0.0     0.0    0.0
+      create.vocabulary                                         ModelFactory                      src/ModelFactory.hs:43:7-53                           2490           1    0.0    0.0     1.3    0.3
+       fromDocuments                                            Vocabulary                        src/Vocabulary.hs:(15,1)-(17,30)                      2492           0    1.3    0.2     1.3    0.3
+        fromDocuments.appendWords                               Vocabulary                        src/Vocabulary.hs:17:5-30                             2495           0    0.0    0.1     0.0    0.1
+         words                                                  Document                          src/Document.hs:12:5-9                                2496          14    0.0    0.0     0.0    0.0
+      create.wordTopicMap                                       ModelFactory                      src/ModelFactory.hs:(46,7)-(47,59)                    2641           1    0.0    0.0     0.0    0.0
+    run.topics                                                  LDARunner                         src/LDARunner.hs:25:7-47                              2376           1    0.0    0.0     0.0    1.5
+     randomTopics                                               LDARunner                         src/LDARunner.hs:(46,1)-(49,31)                       2377           1    0.0    0.0     0.0    1.5
+      randomRs                                                  System.Random                     System/Random.hs:310:3-76                             2379           1    0.0    0.0     0.0    1.5
+       randomRs.\                                               System.Random                     System/Random.hs:310:42-75                            2380           1    0.0    0.1     0.0    1.5
+        randomR                                                 System.Random                     System/Random.hs:345:34-61                            2381           1    0.0    0.0     0.0    1.3
+         randomIvalIntegral                                     System.Random                     System/Random.hs:462:1-71                             2382           1    0.0    0.1     0.0    1.3
+          randomIvalInteger                                     System.Random                     System/Random.hs:(468,1)-(489,76)                     2383       72455    0.0    0.4     0.0    1.2
+           randomIvalInteger.f                                  System.Random                     System/Random.hs:(486,8)-(489,76)                     2388      144910    0.0    0.1     0.0    0.8
+            randomIvalInteger.f.(...)                           System.Random                     System/Random.hs:488:25-39                            2391       72455    0.0    0.0     0.0    0.6
+             next                                               System.Random                     System/Random.hs:218:3-17                             2393           0    0.0    0.1     0.0    0.6
+              stdNext                                           System.Random                     System/Random.hs:(518,1)-(528,64)                     2402       72455    0.0    0.5     0.0    0.6
+               stdNext.k                                        System.Random                     System/Random.hs:522:17-38                            2405       72455    0.0    0.0     0.0    0.0
+               stdNext.k'                                       System.Random                     System/Random.hs:526:17-38                            2408       72455    0.0    0.0     0.0    0.0
+               stdNext.s1'                                      System.Random                     System/Random.hs:523:17-59                            2406       72455    0.0    0.0     0.0    0.0
+               stdNext.s1''                                     System.Random                     System/Random.hs:524:17-64                            2407       72455    0.0    0.0     0.0    0.0
+               stdNext.s2'                                      System.Random                     System/Random.hs:527:17-60                            2409       72455    0.0    0.0     0.0    0.0
+               stdNext.s2''                                     System.Random                     System/Random.hs:528:17-64                            2410       72455    0.0    0.0     0.0    0.0
+               stdNext.z                                        System.Random                     System/Random.hs:520:17-34                            2404       72455    0.0    0.0     0.0    0.0
+               stdNext.z'                                       System.Random                     System/Random.hs:519:17-58                            2403       72455    0.0    0.0     0.0    0.0
+            randomIvalInteger.f.v'                              System.Random                     System/Random.hs:489:25-76                            2389       72455    0.0    0.1     0.0    0.1
+            randomIvalInteger.f.x                               System.Random                     System/Random.hs:488:25-39                            2390       72455    0.0    0.0     0.0    0.0
+            randomIvalInteger.f.g'                              System.Random                     System/Random.hs:488:25-39                            2429       72454    0.0    0.0     0.0    0.0
+           randomIvalInteger.k                                  System.Random                     System/Random.hs:482:8-20                             2384       72455    0.0    0.0     0.0    0.0
+           randomIvalInteger.magtgt                             System.Random                     System/Random.hs:483:8-21                             2385       72455    0.0    0.0     0.0    0.0
+      randomTopics.randomGenerator                              LDARunner                         src/LDARunner.hs:48:5-35                              2394           1    0.0    0.0     0.0    0.0
+       mkStdGen                                                 System.Random                     System/Random.hs:259:1-40                             2395           1    0.0    0.0     0.0    0.0
+        mkStdGen32                                              System.Random                     System/Random.hs:(267,1)-(273,36)                     2396           1    0.0    0.0     0.0    0.0
+         mkStdGen32.(...)                                       System.Random                     System/Random.hs:272:9-39                             2398           1    0.0    0.0     0.0    0.0
+         mkStdGen32.q                                           System.Random                     System/Random.hs:272:9-39                             2401           1    0.0    0.0     0.0    0.0
+         mkStdGen32.s                                           System.Random                     System/Random.hs:271:9-45                             2399           1    0.0    0.0     0.0    0.0
+         mkStdGen32.s1                                          System.Random                     System/Random.hs:272:9-39                             2397           1    0.0    0.0     0.0    0.0
+         mkStdGen32.s2                                          System.Random                     System/Random.hs:273:9-36                             2400           1    0.0    0.0     0.0    0.0
+      randomTopics.range                                        LDARunner                         src/LDARunner.hs:49:5-31                              2378           1    0.0    0.0     0.0    0.0
+  show                                                          Model                             src/Model.hs:(49,3)-(73,16)                           2316           1    0.0   17.7     0.3   67.2
+   showsPrec                                                    Document                          src/Document.hs:15:13-16                              2734          98    0.1   13.8     0.1   13.8
+   show                                                         Data.Matrix                       Data/Matrix.hs:147:2-20                               2502           2    0.0    0.0     0.2   35.7
+    prettyMatrix                                                Data.Matrix                       Data/Matrix.hs:(133,1)-(143,18)                       2503           2    0.0   10.4     0.2   35.7
+     prettyMatrix.\                                             Data.Matrix                       Data/Matrix.hs:136:35-56                              2695       49476    0.0    0.0     0.0    0.2
+      prettyMatrix.fill                                         Data.Matrix                       Data/Matrix.hs:142:4-56                               2698       49476    0.0    0.0     0.0    0.0
+      safeGet                                                   Data.Matrix                       Data/Matrix.hs:(480,1)-(482,37)                       2697       49476    0.0    0.1     0.0    0.1
+       basicUnsafeIndexM                                        Data.Vector                       Data/Vector.hs:290:3-62                               2700       49476    0.0    0.0     0.0    0.0
+        array#                                                  Data.Primitive.Array              Data/Primitive/Array.hs:91:5-10                       2701       49476    0.0    0.0     0.0    0.0
+       unId                                                     Data.Vector.Fusion.Util           Data/Vector/Fusion/Util.hs:25:21-24                   2699       49476    0.0    0.0     0.0    0.0
+     ncols                                                      Data.Matrix                       Data/Matrix.hs:113:4-8                                2504          24    0.0    0.0     0.0    0.0
+     nrows                                                      Data.Matrix                       Data/Matrix.hs:112:4-8                                2694           2    0.0    0.0     0.0    0.0
+     prettyMatrix.(...)                                         Data.Matrix                       Data/Matrix.hs:140:4-41                               2514           2    0.0    0.0     0.1   24.8
+      fmap                                                      Data.Matrix                       Data/Matrix.hs:166:2-53                               2515           2    0.0    0.2     0.1   24.8
+       >>=                                                      Data.Vector.Fusion.Util           Data/Vector/Fusion/Util.hs:36:3-18                    2537      148432    0.1   24.2     0.1   24.4
+        fmap                                                    Data.Vector.Fusion.Stream.Monadic Data/Vector/Fusion/Stream/Monadic.hs:(133,3)-(135,20) 2540       49478    0.0    0.1     0.0    0.2
+         basicUnsafeWrite                                       Data.Vector.Mutable               Data/Vector/Mutable.hs:120:3-65                       2545       49476    0.0    0.1     0.0    0.1
+          primitive                                             Control.Monad.Primitive           Control/Monad/Primitive.hs:210:3-16                   2548           0    0.0    0.0     0.0    0.0
+           marray#                                              Data.Primitive.Array              Data/Primitive/Array.hs:104:5-11                      2549       49476    0.0    0.0     0.0    0.0
+       basicUnsafeSlice                                         Data.Vector.Mutable               Data/Vector/Mutable.hs:91:3-62                        2546       49478    0.0    0.1     0.0    0.1
+       unId                                                     Data.Vector.Fusion.Util           Data/Vector/Fusion/Util.hs:25:21-24                   2536       49478    0.0    0.0     0.0    0.0
+       basicUnsafeIndexM                                        Data.Vector                       Data/Vector.hs:290:3-62                               2541       49476    0.0    0.0     0.0    0.0
+        array#                                                  Data.Primitive.Array              Data/Primitive/Array.hs:91:5-10                       2542       49476    0.0    0.0     0.0    0.0
+       sSize                                                    Data.Vector.Fusion.Bundle.Monadic Data/Vector/Fusion/Bundle/Monadic.hs:124:30-34        2531           4    0.0    0.0     0.0    0.0
+       basicLength                                              Data.Vector                       Data/Vector.hs:284:3-32                               2528           2    0.0    0.0     0.0    0.0
+       basicUnsafeFreeze                                        Data.Vector                       Data/Vector.hs:(276,3)-(277,47)                       2557           2    0.0    0.0     0.0    0.0
+        primitive                                               Control.Monad.Primitive           Control/Monad/Primitive.hs:210:3-16                   2558           2    0.0    0.0     0.0    0.0
+         marray#                                                Data.Primitive.Array              Data/Primitive/Array.hs:104:5-11                      2559           2    0.0    0.0     0.0    0.0
+       basicUnsafeNew                                           Data.Vector.Mutable               Data/Vector/Mutable.hs:(101,3)-(104,32)               2533           2    0.0    0.0     0.0    0.0
+        primitive                                               Control.Monad.Primitive           Control/Monad/Primitive.hs:210:3-16                   2534           2    0.0    0.0     0.0    0.0
+       sChunks                                                  Data.Vector.Fusion.Bundle.Monadic Data/Vector/Fusion/Bundle/Monadic.hs:122:30-36        2535           2    0.0    0.0     0.0    0.0
+       sElems                                                   Data.Vector.Fusion.Bundle.Monadic Data/Vector/Fusion/Bundle/Monadic.hs:121:30-35        2529           2    0.0    0.0     0.0    0.0
+       upperBound                                               Data.Vector.Fusion.Bundle.Size    Data/Vector/Fusion/Bundle/Size.hs:(126,1)-(128,30)    2530           2    0.0    0.0     0.0    0.0
+     prettyMatrix.blank                                         Data.Matrix                       Data/Matrix.hs:143:4-18                               2511           2    0.0    0.0     0.0    0.0
+      prettyMatrix.fill                                         Data.Matrix                       Data/Matrix.hs:142:4-56                               2512           2    0.0    0.0     0.0    0.0
+     prettyMatrix.strings                                       Data.Matrix                       Data/Matrix.hs:140:4-41                               2696           2    0.0    0.0     0.0    0.0
+     prettyMatrix.v                                             Data.Matrix                       Data/Matrix.hs:140:4-41                               2513           2    0.0    0.0     0.0    0.0
+     prettyMatrix.widest                                        Data.Matrix                       Data/Matrix.hs:141:4-37                               2560           2    0.0    0.0     0.0    0.4
+      >>=                                                       Data.Vector.Fusion.Util           Data/Vector/Fusion/Util.hs:36:3-18                    2567      197906    0.0    0.3     0.0    0.4
+       basicUnsafeIndexM                                        Data.Vector                       Data/Vector.hs:290:3-62                               2686       49474    0.0    0.0     0.0    0.0
+        array#                                                  Data.Primitive.Array              Data/Primitive/Array.hs:91:5-10                       2687       49474    0.0    0.0     0.0    0.0
+      sElems                                                    Data.Vector.Fusion.Bundle.Monadic Data/Vector/Fusion/Bundle/Monadic.hs:121:30-35        2563           4    0.0    0.0     0.0    0.0
+      basicLength                                               Data.Vector                       Data/Vector.hs:284:3-32                               2564           2    0.0    0.0     0.0    0.0
+      basicUnsafeIndexM                                         Data.Vector                       Data/Vector.hs:290:3-62                               2565           2    0.0    0.0     0.0    0.0
+       array#                                                   Data.Primitive.Array              Data/Primitive/Array.hs:91:5-10                       2566           2    0.0    0.0     0.0    0.0
+      fmap                                                      Data.Vector                       Data/Vector.hs:348:3-12                               2562           2    0.0    0.0     0.0    0.0
+      unId                                                      Data.Vector.Fusion.Util           Data/Vector/Fusion/Util.hs:25:21-24                   2561           2    0.0    0.0     0.0    0.0
+   documentTopicMap                                             Model                             src/Model.hs:38:5-20                                  2733           1    0.0    0.0     0.0    0.0
+   hyperParameter                                               Model                             src/Model.hs:27:5-18                                  2317           1    0.0    0.0     0.0    0.0
+   numberOfDocuments                                            Model                             src/Model.hs:30:5-21                                  2499           1    0.0    0.0     0.0    0.0
+   numberOfTopics                                               Model                             src/Model.hs:28:5-18                                  2487           1    0.0    0.0     0.0    0.0
+   numberOfUpdates                                              Model                             src/Model.hs:31:5-19                                  2501           1    0.0    0.0     0.0    0.0
+   numberOfWords                                                Model                             src/Model.hs:29:5-17                                  2488           1    0.0    0.0     0.0    0.0
+   phi                                                          Model                             src/Model.hs:35:5-7                                   2702           1    0.0    0.0     0.0    0.0
+   showsPrec                                                    HyperParameter                    src/HyperParameter.hs:18:13-16                        2486           1    0.0    0.0     0.0    0.0
+   theta                                                        Model                             src/Model.hs:34:5-9                                   2505           1    0.0    0.0     0.0    0.0
+   topicAssignments                                             Model                             src/Model.hs:39:5-20                                  2737           1    0.0    0.0     0.0    0.0
+   vocabulary                                                   Model                             src/Model.hs:36:5-14                                  2731           1    0.0    0.0     0.0    0.0
+   wordTopicMap                                                 Model                             src/Model.hs:37:5-16                                  2732           1    0.0    0.0     0.0    0.0
+  test                                                          Main                              app/Main.hs:13:1-40                                   2326           1    0.0    0.0     0.1    5.8
+   create                                                       DocumentFactory                   src/DocumentFactory.hs:(36,3)-(43,46)                 2340          14    0.0    0.8     0.1    5.8
+    create.isBad                                                DocumentFactory                   src/DocumentFactory.hs:43:7-46                        2355      441599    0.0    0.0     0.0    0.0
+    create                                                      DocumentFactory                   src/DocumentFactory.hs:(28,3)-(33,7)                  2341          14    0.0    0.0     0.0    1.2
+     countWords                                                 DocumentFactory                   src/DocumentFactory.hs:(71,1)-(76,73)                 2735       72469    0.0    0.1     0.0    1.2
+      countWords.recurse                                        DocumentFactory                   src/DocumentFactory.hs:76:5-73                        2736       72455    0.0    1.1     0.0    1.1
+    splitOn                                                     Data.List.Split.Internals         src/Data/List/Split/Internals.hs:421:1-42             2342          14    0.0    0.0     0.0    3.7
+     onSublist                                                  Data.List.Split.Internals         src/Data/List/Split/Internals.hs:278:1-72             2347          14    0.0    0.0     0.0    0.0
+     split                                                      Data.List.Split.Internals         src/Data/List/Split/Internals.hs:249:1-68             2343          14    0.0    0.2     0.0    3.7
+      fromElem                                                  Data.List.Split.Internals         src/Data/List/Split/Internals.hs:(116,1)-(117,24)     2497       72455    0.0    0.0     0.0    0.0
+      splitInternal                                             Data.List.Split.Internals         src/Data/List/Split/Internals.hs:(139,1)-(148,70)     2354       72455    0.0    0.2     0.0    3.1
+       splitInternal.(...)                                      Data.List.Split.Internals         src/Data/List/Split/Internals.hs:144:3-31             2357       72455    0.0    0.0     0.0    2.5
+        breakDelim                                              Data.List.Split.Internals         src/Data/List/Split/Internals.hs:(151,1)-(156,36)     2358      422115    0.0    1.9     0.0    2.5
+         matchDelim                                             Data.List.Split.Internals         src/Data/List/Split/Internals.hs:(73,1)-(77,23)       2363      494542    0.0    0.3     0.0    0.3
+          matchDelim.\                                          Data.List.Split.Internals         src/Data/List/Split/Internals.hs:76:60-71             2428       72441    0.0    0.0     0.0    0.0
+         breakDelim.(...)                                       Data.List.Split.Internals         src/Data/List/Split/Internals.hs:155:25-52            2427      349660    0.0    0.3     0.0    0.3
+         breakDelim.match                                       Data.List.Split.Internals         src/Data/List/Split/Internals.hs:155:25-52            2426      349660    0.0    0.0     0.0    0.0
+         breakDelim.ys                                          Data.List.Split.Internals         src/Data/List/Split/Internals.hs:155:25-52            2498      349660    0.0    0.0     0.0    0.0
+       splitInternal.match                                      Data.List.Split.Internals         src/Data/List/Split/Internals.hs:144:3-31             2424       72455    0.0    0.0     0.0    0.0
+       splitInternal.toSplitList                                Data.List.Split.Internals         src/Data/List/Split/Internals.hs:(146,3)-(148,70)     2425       72455    0.0    0.3     0.0    0.3
+       splitInternal.xs                                         Data.List.Split.Internals         src/Data/List/Split/Internals.hs:144:3-31             2356       72455    0.0    0.0     0.0    0.0
+      delimiter                                                 Data.List.Split.Internals         src/Data/List/Split/Internals.hs:25:30-38             2359          14    0.0    0.0     0.0    0.0
+      postProcess                                               Data.List.Split.Internals         src/Data/List/Split/Internals.hs:(163,1)-(168,45)     2344          14    0.0    0.0     0.0    0.4
+       condensePolicy                                           Data.List.Split.Internals         src/Data/List/Split/Internals.hs:32:30-43             2353          14    0.0    0.0     0.0    0.0
+       delimPolicy                                              Data.List.Split.Internals         src/Data/List/Split/Internals.hs:27:30-40             2346          14    0.0    0.0     0.0    0.0
+       doCondense                                               Data.List.Split.Internals         src/Data/List/Split/Internals.hs:(178,1)-(183,20)     2352          14    0.0    0.0     0.0    0.0
+       doDrop                                                   Data.List.Split.Internals         src/Data/List/Split/Internals.hs:(172,1)-(173,14)     2366          14    0.0    0.1     0.0    0.1
+       doMerge                                                  Data.List.Split.Internals         src/Data/List/Split/Internals.hs:(205,1)-(207,14)     2345          14    0.0    0.0     0.0    0.0
+       dropFinal                                                Data.List.Split.Internals         src/Data/List/Split/Internals.hs:(236,1)-(241,26)     2369          14    0.0    0.0     0.0    0.0
+       dropInitial                                              Data.List.Split.Internals         src/Data/List/Split/Internals.hs:(231,1)-(232,19)     2367          14    0.0    0.0     0.0    0.0
+       finalBlankPolicy                                         Data.List.Split.Internals         src/Data/List/Split/Internals.hs:37:30-45             2370          14    0.0    0.0     0.0    0.0
+       initBlankPolicy                                          Data.List.Split.Internals         src/Data/List/Split/Internals.hs:35:30-44             2368          14    0.0    0.0     0.0    0.0
+       insertBlanks                                             Data.List.Split.Internals         src/Data/List/Split/Internals.hs:(189,1)-(191,38)     2364          14    0.0    0.0     0.0    0.3
+        insertBlanks'                                           Data.List.Split.Internals         src/Data/List/Split/Internals.hs:(195,1)-(201,49)     2365      144680    0.0    0.3     0.0    0.3
+  readInterviews                                                InterviewReader                   src/InterviewReader.hs:35:3-61                        2305           0    0.0    0.0     0.0    0.7
+   readInterviews                                               InterviewReader                   src/InterviewReader.hs:(43,3)-(48,83)                 2308          16    0.0    0.0     0.0    0.7
+    readInterviews.recurse                                      InterviewReader                   src/InterviewReader.hs:(45,7)-(48,83)                 2311          16    0.0    0.0     0.0    0.7
+     readInterview                                              InterviewReader                   src/InterviewReader.hs:(38,3)-(41,46)                 2315          14    0.0    0.6     0.0    0.7
+      readInterview.fileName                                    InterviewReader                   src/InterviewReader.hs:40:7-31                        2585          14    0.0    0.0     0.0    0.0
+      readInterview.splitPath                                   InterviewReader                   src/InterviewReader.hs:41:7-46                        2586          14    0.0    0.0     0.0    0.0
+       splitOn                                                  Data.List.Split.Internals         src/Data/List/Split/Internals.hs:421:1-42             2587          14    0.0    0.0     0.0    0.0
+        onSublist                                               Data.List.Split.Internals         src/Data/List/Split/Internals.hs:278:1-72             2592          14    0.0    0.0     0.0    0.0
+        split                                                   Data.List.Split.Internals         src/Data/List/Split/Internals.hs:249:1-68             2588          14    0.0    0.0     0.0    0.0
+         splitInternal                                          Data.List.Split.Internals         src/Data/List/Split/Internals.hs:(139,1)-(148,70)     2599         112    0.0    0.0     0.0    0.0
+          splitInternal.(...)                                   Data.List.Split.Internals         src/Data/List/Split/Internals.hs:144:3-31             2601         112    0.0    0.0     0.0    0.0
+           breakDelim                                           Data.List.Split.Internals         src/Data/List/Split/Internals.hs:(151,1)-(156,36)     2602        1458    0.0    0.0     0.0    0.0
+            matchDelim                                          Data.List.Split.Internals         src/Data/List/Split/Internals.hs:(73,1)-(77,23)       2604        1542    0.0    0.0     0.0    0.0
+             matchDelim.\                                       Data.List.Split.Internals         src/Data/List/Split/Internals.hs:76:60-71             2609          98    0.0    0.0     0.0    0.0
+            breakDelim.(...)                                    Data.List.Split.Internals         src/Data/List/Split/Internals.hs:155:25-52            2621        1346    0.0    0.0     0.0    0.0
+            breakDelim.match                                    Data.List.Split.Internals         src/Data/List/Split/Internals.hs:155:25-52            2620        1346    0.0    0.0     0.0    0.0
+            breakDelim.ys                                       Data.List.Split.Internals         src/Data/List/Split/Internals.hs:155:25-52            2623         646    0.0    0.0     0.0    0.0
+          splitInternal.match                                   Data.List.Split.Internals         src/Data/List/Split/Internals.hs:144:3-31             2610         112    0.0    0.0     0.0    0.0
+          splitInternal.toSplitList                             Data.List.Split.Internals         src/Data/List/Split/Internals.hs:(146,3)-(148,70)     2611         112    0.0    0.0     0.0    0.0
+          splitInternal.xs                                      Data.List.Split.Internals         src/Data/List/Split/Internals.hs:144:3-31             2600         112    0.0    0.0     0.0    0.0
+         delimiter                                              Data.List.Split.Internals         src/Data/List/Split/Internals.hs:25:30-38             2603          14    0.0    0.0     0.0    0.0
+         fromElem                                               Data.List.Split.Internals         src/Data/List/Split/Internals.hs:(116,1)-(117,24)     2622          14    0.0    0.0     0.0    0.0
+         postProcess                                            Data.List.Split.Internals         src/Data/List/Split/Internals.hs:(163,1)-(168,45)     2589          14    0.0    0.0     0.0    0.0
+          condensePolicy                                        Data.List.Split.Internals         src/Data/List/Split/Internals.hs:32:30-43             2598          14    0.0    0.0     0.0    0.0
+          delimPolicy                                           Data.List.Split.Internals         src/Data/List/Split/Internals.hs:27:30-40             2591          14    0.0    0.0     0.0    0.0
+          doCondense                                            Data.List.Split.Internals         src/Data/List/Split/Internals.hs:(178,1)-(183,20)     2597          14    0.0    0.0     0.0    0.0
+          doDrop                                                Data.List.Split.Internals         src/Data/List/Split/Internals.hs:(172,1)-(173,14)     2613          14    0.0    0.0     0.0    0.0
+          doMerge                                               Data.List.Split.Internals         src/Data/List/Split/Internals.hs:(205,1)-(207,14)     2590          14    0.0    0.0     0.0    0.0
+          dropFinal                                             Data.List.Split.Internals         src/Data/List/Split/Internals.hs:(236,1)-(241,26)     2616          14    0.0    0.0     0.0    0.0
+          dropInitial                                           Data.List.Split.Internals         src/Data/List/Split/Internals.hs:(231,1)-(232,19)     2614          14    0.0    0.0     0.0    0.0
+          finalBlankPolicy                                      Data.List.Split.Internals         src/Data/List/Split/Internals.hs:37:30-45             2617          14    0.0    0.0     0.0    0.0
+          initBlankPolicy                                       Data.List.Split.Internals         src/Data/List/Split/Internals.hs:35:30-44             2615          14    0.0    0.0     0.0    0.0
+          insertBlanks                                          Data.List.Split.Internals         src/Data/List/Split/Internals.hs:(189,1)-(191,38)     2612          14    0.0    0.0     0.0    0.0
+           insertBlanks'                                        Data.List.Split.Internals         src/Data/List/Split/Internals.hs:(195,1)-(201,49)     2618         210    0.0    0.0     0.0    0.0
+     listDirectoryWithFullPath                                  InterviewReader                   src/InterviewReader.hs:(57,1)-(59,34)                 2312           2    0.0    0.0     0.0    0.0
+      listDirectoryWithFullPath.prependPath                     InterviewReader                   src/InterviewReader.hs:59:5-34                        2313           2    0.0    0.0     0.0    0.0
+       concatPaths                                              InterviewReader                   src/InterviewReader.hs:62:1-61                        2314          15    0.0    0.0     0.0    0.0
+   directoryToAbsolutePath                                      InterviewReader                   src/InterviewReader.hs:(51,1)-(54,46)                 2306           1    0.0    0.0     0.0    0.0
+    directoryToAbsolutePath.appendRelativePath                  InterviewReader                   src/InterviewReader.hs:54:5-46                        2309           1    0.0    0.0     0.0    0.0
+     concatPaths                                                InterviewReader                   src/InterviewReader.hs:62:1-61                        2310           1    0.0    0.0     0.0    0.0

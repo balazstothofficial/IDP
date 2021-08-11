@@ -1,8 +1,8 @@
-import DocumentTest
-import LDATest
+import DocumentFactoryTest
+import ModelFactoryTest
 import Test.Hspec
 
 main :: IO ()
 main = hspec $ do
-  createDocumentTests
-  initialModelTest
+  createDocuments
+  createModels

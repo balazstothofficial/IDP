@@ -4,11 +4,12 @@ module TestData
 where
 
 import Document
+import DocumentFactory
 
 testDocuments :: [Document]
 testDocuments =
-  [ createDocument ["the", "tree", "runs", "quickly"],
-    createDocument ["far", "away", "lions", "yell", "yell"],
-    createDocument ["she", "shoots", "yell", "shapes", "now"],
-    createDocument ["he", "hits", "hops", "happily", "the", "the"]
+  [ create ["the", "tree", "runs", "quickly"],
+    create ["far", "away", "lions", "yell", "yell"],
+    create ["she", "shoots", "yell", "shapes", "now"],
+    create ["he", "hits", "hops", "happily", "the", "the"]
   ]

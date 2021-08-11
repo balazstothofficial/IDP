@@ -4,9 +4,7 @@ module InterviewReader
   ( readInterview,
     readInterviews,
     Directory (Relative, Absolute),
-    Interview,
-    title,
-    content,
+    Interview (..)
   )
 where
 
@@ -14,6 +12,7 @@ import Data.Functor
 import Data.List.Split
 import System.Directory
 import System.FilePath (pathSeparator)
+import Control.Monad ((>=>))
 
 data Interview = Interview
   { title :: String,
@@ -32,8 +31,8 @@ class InterviewReader a where
   readInterviews :: a -> IO [Interview]
 
 instance InterviewReader Directory where
-  readInterview = useDirectoryFor readInterview
-  readInterviews = useDirectoryFor readInterviews
+  readInterview = directoryToAbsolutePath >=> readInterview
+  readInterviews = directoryToAbsolutePath >=> readInterviews
 
 instance InterviewReader FilePath where
   readInterview path = readFile path <&> Interview fileName
@@ -48,13 +47,11 @@ instance InterviewReader FilePath where
           then readInterview path <&> (: [])
           else listDirectoryWithFullPath path >>= fmap concat . mapM readInterviews
 
-useDirectoryFor :: (FilePath -> IO a) -> (Directory -> IO a)
-useDirectoryFor operation = transformedOperation
+directoryToAbsolutePath :: Directory -> IO FilePath
+directoryToAbsolutePath (Absolute path) = pure path
+directoryToAbsolutePath (Relative path) = getCurrentDirectory <&> appendRelativePath
   where
-    transformedOperation (Absolute path) = operation path
-    transformedOperation (Relative path) = getCurrentDirectory >>= operation . appendPath
-      where
-        appendPath = flip concatPaths path
+    appendRelativePath = flip concatPaths path
 
 listDirectoryWithFullPath :: FilePath -> IO [FilePath]
 listDirectoryWithFullPath path = listDirectory path <&> fmap prependPath

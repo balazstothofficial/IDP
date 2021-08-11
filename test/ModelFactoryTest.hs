@@ -1,23 +1,27 @@
-module LDATest
-  ( initialModelTest,
-  )
-where
+{-# LANGUAGE DisambiguateRecordFields #-}
+
+module ModelFactoryTest where
 
 import qualified Data.Map as Map
 import qualified Data.Matrix as Matrix
 import qualified Data.Set as Set
 import HyperParameter
 import Model
-import LDA
+import ModelFactory
 import Test.HUnit
 import Test.Hspec
 import TestData
 
-initialModelTest :: Spec
-initialModelTest = do
+createModels :: Spec
+createModels = do
   describe "Initial Model" $ do
     it "Unit Test 1" $ do
-      initialModel testDocuments 3 randomTopics
+      create
+        Input
+          { documents = testDocuments,
+            numberOfTopics = 3,
+            topics = randomTopics
+          }
         @?= Model
           { hyperParameter =
               HyperParameter

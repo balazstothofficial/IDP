@@ -1,29 +1,24 @@
-module Document(
- Document(Document),
- createDocument,
- words,
- wordCounts,
- WordCountMap
-) where
+module Document
+  ( Document (..),
+    WordCountMap
+  )
+where
 
-import Data.Map
+import Data.Map (Map)
 import Prelude hiding (lookup, words)
 
 data Document = Document
-  { words :: [String],
+  { title :: String,
+    words :: [String],
     wordCounts :: WordCountMap
   }
-  deriving (Show, Eq, Ord)
+  deriving (Show)
+  
+-- TODO: Not completely safe
+instance Eq Document where
+  (==) first second = title first == title second
+  
+instance Ord Document where
+  (<=) first second = title first <= title second
 
 type WordCountMap = Map String Int
-
-createDocument :: [String] -> Document
-createDocument words = Document words (countWords words empty)
-
-countWords :: [String] -> WordCountMap -> WordCountMap
-countWords [] wordCountMap = wordCountMap
-countWords (word : words) wordCountMap = case lookup word wordCountMap of
-  Just count -> recurse (count + 1)
-  Nothing -> recurse 1
-  where
-    recurse count = countWords words $ insert word count wordCountMap
