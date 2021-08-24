@@ -3,13 +3,14 @@
 module LDARunner where
 
 import Document (Document)
+import Factory
+import LDAEstimator (estimate, estimator)
 import qualified LDAEstimator
 import Model (Model (..))
 import qualified ModelFactory
 import System.Random (mkStdGen, randomRs)
 
-class LDARunner a where
-  run :: a -> Model
+newtype LDARunner a = LDARunner {run :: a -> Model}
 
 data Input = Input
   { documents :: [Document],
@@ -19,28 +20,32 @@ data Input = Input
   }
   deriving (Show, Eq)
 
-instance LDARunner Input where
-  run Input {..} = estimatedModel
-    where
-      topics = randomTopics seed numberOfTopics
+ldaRunner :: LDARunner Input
+ldaRunner = LDARunner {run = run}
+  where
+    run Input {..} = estimatedModel
+      where
+        topics = randomTopics seed numberOfTopics
 
-      initialModel =
-        ModelFactory.create
-          ModelFactory.Input
-            { documents = documents,
-              numberOfTopics = numberOfTopics,
-              topics = topics
-            }
+        initialModel =
+          create
+            ModelFactory.modelFactory
+            ModelFactory.Input
+              { documents = documents,
+                numberOfTopics = numberOfTopics,
+                topics = topics
+              }
 
-      factors = randomFactors (seed + 1)
+        factors = randomFactors (seed + 1)
 
-      estimatedModel =
-        LDAEstimator.estimate
-          LDAEstimator.Input
-            { model = initialModel,
-              iterations = iterations,
-              factors = factors
-            }
+        estimatedModel =
+          estimate
+            estimator
+            LDAEstimator.Input
+              { model = initialModel,
+                iterations = iterations,
+                factors = factors
+              }
 
 randomTopics :: Int -> Int -> [Int]
 randomTopics seed numberOfTopics = randomRs range randomGenerator

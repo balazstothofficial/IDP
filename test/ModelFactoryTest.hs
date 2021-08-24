@@ -5,6 +5,7 @@ module ModelFactoryTest where
 import qualified Data.Map as Map
 import qualified Data.Matrix as Matrix
 import qualified Data.Set as Set
+import Factory
 import HyperParameter
 import Model
 import ModelFactory
@@ -17,24 +18,25 @@ createModels = do
   describe "Create Models" $ do
     it "Unit Test 1" $ do
       create
+        modelFactory
         Input
           { documents = testDocuments,
-            numberOfTopics = 3,
-            topics = randomTopics
+            numberOfTopics = 4,
+            topics = testTopics
           }
         @?= Model
           { hyperParameter =
               HyperParameter
-                { alpha = 50 / 3,
+                { alpha = 50 / 4,
                   beta = 0.1
                 },
-            numberOfTopics = 3,
+            numberOfTopics = 4,
             numberOfWords = 16,
             numberOfDocuments = 4,
             numberOfUpdates = 0,
             documents = testDocuments,
-            theta = Matrix.zero 4 3,
-            phi = Matrix.zero 3 16,
+            theta = Matrix.zero 4 4,
+            phi = Matrix.zero 4 16,
             vocabulary =
               Set.fromList
                 [ "the",
@@ -97,8 +99,6 @@ createModels = do
                 [2, 1, 0, 1, 0],
                 [1, 3, 1, 2, 0],
                 [2, 3, 1, 1, 3, 2]
-              ]
+              ],
+            topicCounts = Map.fromList [(0, 4), (1, 8), (2, 4), (3, 4)]
           }
-
-randomTopics :: [Int]
-randomTopics = [1, 1, 3, 0, 2, 1, 0, 1, 0, 1, 3, 1, 2, 0, 2, 3, 1, 1, 3, 2, 0]

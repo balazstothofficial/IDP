@@ -27,7 +27,9 @@ source-repository head
 
 library
   exposed-modules:
-      InterviewReader
+      InterviewReader,
+      Interview,
+      Directory,
       Document
       TestData
       Vocabulary
@@ -35,9 +37,11 @@ library
       HyperParameter
       LDARunner,
       LDAEstimator,
+      Factory,
       ModelFactory,
       DocumentFactory,
-      Debug
+      Debug,
+      TopicCountsFactory
   other-modules:
       Paths_IDP
   hs-source-dirs:
@@ -71,6 +75,8 @@ test-suite IDP-test
       Paths_IDP
       DocumentFactoryTest
       ModelFactoryTest
+      LDAEstimatorTest
+      TopicCountsFactoryTest
   hs-source-dirs:
       test
   ghc-options: -threaded -rtsopts -with-rtsopts=-N

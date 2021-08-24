@@ -1,62 +1,45 @@
 {-# LANGUAGE FlexibleInstances #-}
 
 module InterviewReader
-  ( readInterview,
-    readInterviews,
+  ( InterviewReader (..),
     Directory (Relative, Absolute),
-    Interview (..)
+    Interview (..),
+    interviewReader,
   )
 where
 
-import Data.Functor
-import Data.List.Split
-import System.Directory
-import System.FilePath (pathSeparator)
 import Control.Monad ((>=>))
+import Data.Functor ((<&>))
+import Data.List.Split
+import Directory
+import Interview
+import System.Directory (doesFileExist)
+import System.FilePath (pathSeparator)
 
-data Interview = Interview
-  { title :: String,
-    content :: String
+data InterviewReader a = InterviewReader
+  { readInterview :: a -> IO Interview,
+    readInterviews :: a -> IO [Interview]
   }
-  deriving (Eq)
 
--- Just for debugging purposes
-instance Show Interview where
-  show interview = "Interview: " ++ title interview
-
-data Directory = Relative FilePath | Absolute FilePath
-
-class InterviewReader a where
-  readInterview :: a -> IO Interview
-  readInterviews :: a -> IO [Interview]
-
-instance InterviewReader Directory where
-  readInterview = directoryToAbsolutePath >=> readInterview
-  readInterviews = directoryToAbsolutePath >=> readInterviews
-
-instance InterviewReader FilePath where
-  readInterview path = readFile path <&> Interview fileName
-    where
-      fileName = last splitPath
-      splitPath = splitOn [pathSeparator] path
-
-  readInterviews path = doesFileExist path >>= recurse
-    where
-      recurse isFile =
-        if isFile
-          then readInterview path <&> (: [])
-          else listDirectoryWithFullPath path >>= fmap concat . mapM readInterviews
-
-directoryToAbsolutePath :: Directory -> IO FilePath
-directoryToAbsolutePath (Absolute path) = pure path
-directoryToAbsolutePath (Relative path) = getCurrentDirectory <&> appendRelativePath
+interviewReader :: InterviewReader Directory
+interviewReader = InterviewReader readInterviewFromDirectory readInterviewsFromDirectory
   where
-    appendRelativePath = flip concatPaths path
+    readInterviewFromDirectory = withAbsolutePath readInterview
+    readInterviewsFromDirectory = withAbsolutePath readInterviews
 
-listDirectoryWithFullPath :: FilePath -> IO [FilePath]
-listDirectoryWithFullPath path = listDirectory path <&> fmap prependPath
+    withAbsolutePath f = directoryToAbsolutePath >=> f filePathBasedInterviewReader
+
+filePathBasedInterviewReader :: InterviewReader FilePath
+filePathBasedInterviewReader = InterviewReader readInterviewFromPath readInterviewsFromPath
   where
-    prependPath = concatPaths path
+    readInterviewFromPath path = readFile path <&> Interview fileName
+      where
+        fileName = last splitPath
+        splitPath = splitOn [pathSeparator] path
 
-concatPaths :: FilePath -> FilePath -> FilePath
-concatPaths first second = first ++ [pathSeparator] ++ second
+    readInterviewsFromPath path = doesFileExist path >>= recurse
+      where
+        recurse isFile =
+          if isFile
+            then readInterviewFromPath path <&> (: [])
+            else listDirectoryWithFullPath path >>= fmap concat . mapM readInterviewsFromPath

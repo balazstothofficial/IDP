@@ -8,12 +8,13 @@ import qualified Data.Map as Map
 import qualified Data.Matrix as Matrix
 import qualified Data.Maybe as Maybe
 import qualified Data.Set as Set
+import Debug ((?))
 import Document
 import HyperParameter
 import Model
+import Prelude hiding (words)
 
-class Estimator a where
-  estimate :: a -> Model
+newtype Estimator a = Estimator {estimate :: a -> Model}
 
 data Input = Input
   { model :: Model,
@@ -22,28 +23,34 @@ data Input = Input
   }
 
 -- TODO: Simplify!!
-instance Estimator Input where
-  estimate Input {..} = case iterations of
-    0 -> model
-    _ ->
-      computePhi $
-        computeTheta $
-          estimate
-            Input
-              { model = outputModel,
-                iterations = iterations - 1,
-                factors = drop totalDocumentsLength factors
-              }
-    where
-      outputModel = tmpModel {topicAssignments = topicAssignments}
+estimator :: Estimator Input
+estimator = Estimator {estimate = estimate}
+  where
+    estimate Input {..} = case iterations of
+      0 -> model
+      _ ->
+        -- TODO: computePhi $
+        -- TODO: computeTheta $
+        estimate
+          Input
+            { model = outputModel,
+              iterations = iterations - 1,
+              factors = drop totalDocumentsLength factors
+            }
+          ? show (Model.topicAssignments outputModel)
+      where
+        outputModel = tmpModel {topicAssignments = topicAssignments}
 
-      (tmpModel, topicAssignments) = sampleDocuments model documents (Model.topicAssignments model) factors
+        (tmpModel, topicAssignments) = sampleDocuments model documents (Model.topicAssignments model) factors
 
-      documents = Model.documents model
+        documents = Model.documents model
 
-      totalDocumentsLength = foldr sumLength 0 documents
-        where
-          sumLength document acc = acc + length (Document.words document)
+        totalDocumentsLength = foldr sumLength 0 documents
+          where
+            sumLength document acc = acc + length (Document.words document)
+
+--sampleDocuments2 :: Model -> [Double] -> [Document] -> [[Int]]  -> [(Model, [Int])]
+--sampleDocuments2 model factors = zipWith (sample2 model factors)
 
 sampleDocuments :: Model -> [Document] -> [[Int]] -> [Double] -> (Model, [[Int]])
 sampleDocuments model [] _ _ = (model, [])
@@ -55,6 +62,14 @@ sampleDocuments model (document : documents) (topicAssignment : topicAssignments
 
     (outputModel, outputTopics) = sample model (Document.words document) topicAssignment document factors
 
+--sample2 :: Model -> [Double] -> Document -> [Int] -> (Model, [Int])
+--sample2 model factors document topics = _
+-- where
+--    words = Document.words document
+
+-- sample3 :: Model -> Document -> [String]  -> [Double] -> [Int] -> (Model, [Int])
+-- sample3 model document = zipWith3 (sampling model document)
+
 sample :: Model -> [String] -> [Int] -> Document -> [Double] -> (Model, [Int])
 sample model [] _ _ _ = (model, [])
 sample model (word : words) (topic : topics) document (factor : factors) =
@@ -63,56 +78,73 @@ sample model (word : words) (topic : topics) document (factor : factors) =
     (recursedModel, recursedTopics) = sample outputModel words topics document factors
 
     outputModel =
-      model
+      inputModel
         { Model.wordTopicMap =
-            Map.alter increase (word, newTopic) $ Model.wordTopicMap model,
+            Map.alter increase (word, newTopic) $ Model.wordTopicMap inputModel,
           Model.documentTopicMap =
-            Map.alter increase (document, newTopic) $ Model.documentTopicMap model
+            Map.alter increase (document, newTopic) $ Model.documentTopicMap inputModel,
+          Model.topicCounts = Map.alter increase newTopic $ Model.topicCounts inputModel
         }
 
-    newTopic = sampling inputModel word document factor
+    newTopic = sampling inputModel document word factor
 
     inputModel =
       model
         { Model.wordTopicMap =
             Map.alter decrease (word, topic) $ Model.wordTopicMap model,
           Model.documentTopicMap =
-            Map.alter decrease (document, topic) $ Model.documentTopicMap model
+            Map.alter decrease (document, topic) $ Model.documentTopicMap model,
+          Model.topicCounts = Map.alter decrease topic $ Model.topicCounts model
         }
 
     decrease Nothing = Nothing
-    decrease (Just 0) = Nothing
+    decrease (Just 1) = Nothing
     decrease (Just n) = Just (n - 1)
 
     increase Nothing = Just 1
     increase (Just n) = Just (n + 1)
 
-sampling :: Model -> String -> Document -> Double -> Int
-sampling model word document randomFactor = Maybe.fromJust $ List.findIndex predicate p
+sampling :: Model -> Document -> String -> Double -> Int
+sampling model document word randomFactor = Maybe.fromJust $ List.findIndex predicate p
   where
     predicate value = value > u
     u = randomFactor * last p
     p = multinomialSampling model word document
 
 multinomialSampling :: Model -> String -> Document -> [Double]
-multinomialSampling model word document = scanl1 (+) (fmap sampling [0 .. (Model.numberOfTopics model - 1)])
+multinomialSampling Model {..} word Document {..} = scanl1 (+) (fmap sampling [0 .. (numberOfTopics - 1)])
   where
-    vBeta = beta * fromIntegral (Model.numberOfWords model)
-    beta = HyperParameter.beta $ Model.hyperParameter model
+    -- TODO: Does this work?
+    document = Document {..}
 
-    kAlpha = alpha * fromIntegral (Model.numberOfTopics model)
-    alpha = HyperParameter.alpha $ Model.hyperParameter model
+    kAlpha = alpha * fromIntegral numberOfTopics
+    alpha = HyperParameter.alpha hyperParameter
 
-    wordTopicMap = Model.wordTopicMap model
-    documentTopicMap = Model.documentTopicMap model
+    vBeta = beta * fromIntegral numberOfWords
+    beta = HyperParameter.beta hyperParameter
 
     sampling topic =
-      (fromIntegral (Map.findWithDefault 0 (word, topic) wordTopicMap) + beta)
-        / (fromIntegral (count isTopic wordTopicMap) + vBeta)
-        * (fromIntegral (Map.findWithDefault 0 (document, topic) documentTopicMap) + alpha)
-        / (fromIntegral (length $ Document.words document) + kAlpha)
+      samplingResult
+        ? "\nSampling Result: " ++ show samplingResult
+          ++ "\nTopic: "
+          ++ show topic
+          ++ "\nNoWordForTopic: "
+          ++ show numberOfWordsWithTopic
+          ++ "\nNoTopic: "
+          ++ show occurrencesOfTopic
+          ++ "\nNoTopicInDoc: "
+          ++ show occurrencesOfTopicInDocument
+          ++ "\nNoWordInDoc: "
+          ++ show numberOfWordsInDocument
       where
-        isTopic (_, topic') = topic == topic'
+        samplingResult =
+          (numberOfWordsWithTopic + beta) / (occurrencesOfTopic + vBeta)
+            * (occurrencesOfTopicInDocument + alpha) / (numberOfWordsInDocument + kAlpha)
+
+        numberOfWordsWithTopic = fromIntegral (Map.findWithDefault 0 (word, topic) wordTopicMap)
+        occurrencesOfTopic = fromIntegral (Map.findWithDefault 0 topic topicCounts)
+        occurrencesOfTopicInDocument = fromIntegral (Map.findWithDefault 0 (document, topic) documentTopicMap)
+        numberOfWordsInDocument = fromIntegral (length words) - 1
 
 count :: (k -> Bool) -> Map k Int -> Int
 count predicate = Map.foldrWithKey f 0

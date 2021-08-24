@@ -2,6 +2,7 @@ module Model
   ( Model (Model),
     WordTopicMap,
     DocumentTopicMap,
+    TopicCounts,
     hyperParameter,
     numberOfTopics,
     numberOfWords,
@@ -14,6 +15,7 @@ module Model
     wordTopicMap,
     documentTopicMap,
     topicAssignments,
+    topicCounts,
   )
 where
 
@@ -23,6 +25,7 @@ import Document
 import HyperParameter
 import Vocabulary
 
+-- TODO: Use some Nat type instead of Ints
 data Model = Model
   { hyperParameter :: HyperParameter,
     numberOfTopics :: Int,
@@ -35,12 +38,15 @@ data Model = Model
     phi :: Matrix Double, -- Size: NumberOfTopics x NumberOfWords
     vocabulary :: Vocabulary, -- Size: NumberOfWords
     wordTopicMap :: WordTopicMap, -- Number of words associated to specific topic
+    topicCounts :: TopicCounts,
     documentTopicMap :: DocumentTopicMap, -- Number of words with topic in specific document
     topicAssignments :: [[Int]] -- Size: NumberOfDocuments x Document size
   }
   deriving (Eq)
 
 type WordTopicMap = Map (String, Int) Int
+
+type TopicCounts = Map Int Int
 
 type DocumentTopicMap = Map (Document, Int) Int
 
@@ -70,6 +76,8 @@ instance Show Model where
       ++ show (documentTopicMap model)
       ++ "\n\ttopicAssignments = "
       ++ show (topicAssignments model)
+      ++ "\n\ttopicCounts = "
+      ++ show (topicCounts model)
       ++ "\n}\n"
 
 showDimensions :: Matrix a -> String

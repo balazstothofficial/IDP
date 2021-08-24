@@ -1,16 +1,18 @@
 module Main where
 
 import Document
-import DocumentFactory
+import DocumentFactory (create, interviewBasedDocumentFactory)
 import InterviewReader
-import LDARunner
-import TestData
+import LDARunner (ldaRunner, run)
+import qualified LDARunner
 
 main :: IO ()
-main = readInterviews directory >>= print . (\documents -> run (LDARunner.Input documents 1 6 2323453)) . test
+main = readInterviews interviewReader directory >>= print . runLDA . test
+  where
+    runLDA documents = run ldaRunner (LDARunner.Input documents 1 6 2323453)
 
 test :: [Interview] -> [Document]
-test interviews = fmap create interviews
+test = fmap $ create interviewBasedDocumentFactory
 
 directory :: Directory
 directory = Relative "interviews"

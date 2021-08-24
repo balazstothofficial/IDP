@@ -1,43 +1,47 @@
-{-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE RecordWildCards #-}
 
 module DocumentFactory
   ( Input (..),
-    create,
+    documentFactory,
+    interviewBasedDocumentFactory,
+    create
   )
 where
 
 import Data.List.Split (splitOn)
 import qualified Data.Map as Map
 import Document
+import Factory
 import InterviewReader (Interview (..))
 import Prelude hiding (words)
-
-class DocumentFactory a where
-  create :: a -> Document
 
 data Input = Input
   { title :: String,
     words :: [String]
   }
 
-instance DocumentFactory Input where
-  create Input {..} =
-    Document
-      { title = title,
-        words = words,
-        wordCounts = countWords words Map.empty
-      }
-
-instance DocumentFactory Interview where
-  create Interview {..} =
-    create
-      Input
+documentFactory :: Factory Input Document
+documentFactory = Factory {create = create}
+  where
+    create Input {..} =
+      Document
         { title = title,
-          words = splitOn " " (filter isBad content)
+          words = words,
+          wordCounts = countWords words Map.empty
         }
-    where
-      isBad char = char `notElem` ".,!?\n()/:"
+
+interviewBasedDocumentFactory :: Factory Interview Document
+interviewBasedDocumentFactory = Factory {create = createWithInterview}
+  where
+    createWithInterview Interview {..} =
+      create
+        documentFactory
+        Input
+          { title = title,
+            words = splitOn " " (filter isBad content)
+          }
+      where
+        isBad char = char `notElem` ".,!?\n()/:"
 
 -- TODO: Filter out not needed words
 {-
