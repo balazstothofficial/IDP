@@ -1,8 +1,8 @@
-import DocumentFactoryTest
+import DocumentTest
 import LDAEstimatorTest
 import ModelFactoryTest
 import Test.Hspec
-import TopicCountsFactoryTest
+import TopicCountsTest
 
 main :: IO ()
 main = hspec $ do

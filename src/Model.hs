@@ -1,29 +1,20 @@
 module Model
-  ( Model (Model),
+  ( Model (..),
     WordTopicMap,
     DocumentTopicMap,
     TopicCounts,
-    hyperParameter,
-    numberOfTopics,
-    numberOfWords,
-    numberOfDocuments,
-    numberOfUpdates,
-    documents,
-    vocabulary,
-    theta,
-    phi,
-    wordTopicMap,
-    documentTopicMap,
-    topicAssignments,
-    topicCounts,
+    TopicAssignments,
   )
 where
 
-import Data.Map (Map)
 import Data.Matrix (Matrix, ncols, nrows)
 import Document
+import DocumentTopicMap
 import HyperParameter
+import TopicAssignments
+import TopicCounts (TopicCounts)
 import Vocabulary
+import WordTopicMap (WordTopicMap)
 
 -- TODO: Use some Nat type instead of Ints
 data Model = Model
@@ -40,15 +31,9 @@ data Model = Model
     wordTopicMap :: WordTopicMap, -- Number of words associated to specific topic
     topicCounts :: TopicCounts,
     documentTopicMap :: DocumentTopicMap, -- Number of words with topic in specific document
-    topicAssignments :: [[Int]] -- Size: NumberOfDocuments x Document size
+    topicAssignments :: TopicAssignments -- Size: NumberOfDocuments x Document size
   }
   deriving (Eq)
-
-type WordTopicMap = Map (String, Int) Int
-
-type TopicCounts = Map Int Int
-
-type DocumentTopicMap = Map (Document, Int) Int
 
 -- For debugging purposes:
 instance Show Model where

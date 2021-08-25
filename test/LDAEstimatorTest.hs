@@ -5,8 +5,7 @@ module LDAEstimatorTest where
 import qualified Data.Map as Map
 import qualified Data.Matrix as Matrix
 import qualified Data.Set as Set
-import Document (Document)
-import DocumentFactory
+import Document (Document, create)
 import HyperParameter
 import LDAEstimator (estimate)
 import qualified LDAEstimator
@@ -217,7 +216,6 @@ finalModel =
 initialModel :: Model
 initialModel =
   create
-    ModelFactory.modelFactory
     ModelFactory.Input
       { documents = documents,
         topics = [2, 2, 1, 1, 1, 4, 3, 4, 4, 1, 0, 2, 0, 4, 4, 1],
@@ -226,14 +224,12 @@ initialModel =
 
 documents :: [Document]
 documents =
-  [ createDocument Input {title = "Doc1", words = ["Halli", "Hallo", "Tralla"]},
-    createDocument Input {title = "Doc2", words = ["Test", "Testi", "Testo"]},
-    createDocument Input {title = "Doc3", words = ["Gollo", "Trollo", "Lollo"]},
-    createDocument Input {title = "Doc4", words = ["Gau", "Lau", "Flau", "Tau"]},
-    createDocument Input {title = "Doc5", words = ["Tatz", "Fratz", "Katz"]}
+  [ create "Doc1" ["Halli", "Hallo", "Tralla"],
+    create "Doc2" ["Test", "Testi", "Testo"],
+    create "Doc3" ["Gollo", "Trollo", "Lollo"],
+    create "Doc4" ["Gau", "Lau", "Flau", "Tau"],
+    create "Doc5" ["Tatz", "Fratz", "Katz"]
   ]
-  where
-    createDocument = create documentFactory
 
 factors :: [Double]
 factors =

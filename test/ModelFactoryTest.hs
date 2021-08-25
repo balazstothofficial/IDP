@@ -18,7 +18,6 @@ createModels = do
   describe "Create Models" $ do
     it "Unit Test 1" $ do
       create
-        modelFactory
         Input
           { documents = testDocuments,
             numberOfTopics = 4,

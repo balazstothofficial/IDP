@@ -5,4 +5,5 @@ module Factory
   )
 where
 
-newtype Factory a b = Factory {create :: a -> b}
+class Factory a b where
+  create :: a -> b

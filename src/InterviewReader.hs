@@ -4,7 +4,6 @@ module InterviewReader
   ( InterviewReader (..),
     Directory (Relative, Absolute),
     Interview (..),
-    interviewReader,
   )
 where
 
@@ -16,30 +15,23 @@ import Interview
 import System.Directory (doesFileExist)
 import System.FilePath (pathSeparator)
 
-data InterviewReader a = InterviewReader
-  { readInterview :: a -> IO Interview,
-    readInterviews :: a -> IO [Interview]
-  }
+class InterviewReader a where
+  readInterview :: a -> IO Interview
+  readInterviews :: a -> IO [Interview]
 
-interviewReader :: InterviewReader Directory
-interviewReader = InterviewReader readInterviewFromDirectory readInterviewsFromDirectory
-  where
-    readInterviewFromDirectory = withAbsolutePath readInterview
-    readInterviewsFromDirectory = withAbsolutePath readInterviews
+instance InterviewReader Directory where
+  readInterview = directoryToAbsolutePath >=> readInterview
+  readInterviews = directoryToAbsolutePath >=> readInterviews
 
-    withAbsolutePath f = directoryToAbsolutePath >=> f filePathBasedInterviewReader
+instance InterviewReader FilePath where
+  readInterview path = readFile path <&> Interview fileName
+    where
+      fileName = last splitPath
+      splitPath = splitOn [pathSeparator] path
 
-filePathBasedInterviewReader :: InterviewReader FilePath
-filePathBasedInterviewReader = InterviewReader readInterviewFromPath readInterviewsFromPath
-  where
-    readInterviewFromPath path = readFile path <&> Interview fileName
-      where
-        fileName = last splitPath
-        splitPath = splitOn [pathSeparator] path
-
-    readInterviewsFromPath path = doesFileExist path >>= recurse
-      where
-        recurse isFile =
-          if isFile
-            then readInterviewFromPath path <&> (: [])
-            else listDirectoryWithFullPath path >>= fmap concat . mapM readInterviewsFromPath
+  readInterviews path = doesFileExist path >>= recurse
+    where
+      recurse isFile =
+        if isFile
+          then readInterview path <&> (: [])
+          else listDirectoryWithFullPath path >>= fmap concat . mapM readInterviews
