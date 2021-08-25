@@ -21,7 +21,6 @@ estimateDocuments = do
   describe "Estimate" $ do
     it "Unit Test 1 - Compare With JGibbLDA implementation" $ do
       estimate
-        LDAEstimator.estimator
         LDAEstimator.Input
           { model = initialModel,
             iterations = 9,
@@ -38,6 +37,7 @@ finalModel =
             beta = 0.1
           },
       numberOfTopics = 5,
+      vocabularySize = 16,
       numberOfWords = 16,
       numberOfDocuments = 5,
       numberOfUpdates = 0, --TODO

@@ -4,7 +4,7 @@ module LDARunner where
 
 import Document (Document)
 import Factory
-import LDAEstimator (estimate, estimator)
+import LDAEstimator (estimate)
 import qualified LDAEstimator
 import Model (Model (..))
 import qualified ModelFactory
@@ -36,7 +36,6 @@ instance LDARunner Input where
 
       estimatedModel =
         estimate
-          estimator
           LDAEstimator.Input
             { model = initialModel,
               iterations = iterations,

@@ -1,3 +1,5 @@
+{-# LANGUAGE RecordWildCards #-}
+
 module Model
   ( Model (..),
     WordTopicMap,
@@ -20,6 +22,7 @@ import WordTopicMap (WordTopicMap)
 data Model = Model
   { hyperParameter :: HyperParameter,
     numberOfTopics :: Int,
+    vocabularySize :: Int,
     numberOfWords :: Int,
     numberOfDocuments :: Int,
     numberOfUpdates :: Int,
@@ -37,32 +40,34 @@ data Model = Model
 
 -- For debugging purposes:
 instance Show Model where
-  show model =
+  show Model{..} =
     "Model {"
       ++ "\n\tHyperParamter = "
-      ++ show (hyperParameter model)
+      ++ show hyperParameter
       ++ "\n\tNumber of Topics = "
-      ++ show (numberOfTopics model)
-      ++ "\n\tNumber of Words = "
-      ++ show (numberOfWords model)
+      ++ show numberOfTopics
+      ++ "\n\tNumber of Words in Vocabulary = "
+      ++ show vocabularySize
+      ++ "\n\tTotal Number of Words = "
+      ++ show numberOfWords
       ++ "\n\tNumber of Documents = "
-      ++ show (numberOfDocuments model)
+      ++ show numberOfDocuments
       ++ "\n\tNumber of Updates = "
-      ++ show (numberOfUpdates model)
+      ++ show numberOfUpdates
       ++ "\n\tTheta = "
-      ++ show (theta model)
+      ++ show theta
       ++ "\n\tPhi = "
-      ++ show (phi model)
+      ++ show phi
       ++ "\n\tVocabulary = "
-      ++ show (vocabulary model)
+      ++ show vocabulary
       ++ "\n\twordTopicMap = "
-      ++ show (wordTopicMap model)
+      ++ show wordTopicMap
       ++ "\n\tdocumentTopicMap = "
-      ++ show (documentTopicMap model)
+      ++ show documentTopicMap
       ++ "\n\ttopicAssignments = "
-      ++ show (topicAssignments model)
+      ++ show topicAssignments
       ++ "\n\ttopicCounts = "
-      ++ show (topicCounts model)
+      ++ show topicCounts
       ++ "\n}\n"
 
 showDimensions :: Matrix a -> String

@@ -26,12 +26,13 @@ instance Factory Input Model where
   create Input {..} =
     Model
       { numberOfTopics = numberOfTopics,
+        vocabularySize = length vocabulary,
         numberOfWords = numberOfWords,
         numberOfDocuments = numberOfDocuments,
         numberOfUpdates = 0,
         documents = documents,
         theta = Matrix.zero numberOfDocuments numberOfTopics,
-        phi = Matrix.zero numberOfTopics numberOfWords,
+        phi = Matrix.zero numberOfTopics vocabularySize,
         vocabulary = vocabulary,
         hyperParameter =
           HyperParameter
@@ -44,14 +45,15 @@ instance Factory Input Model where
         topicAssignments = topicAssignments
       }
     where
-      neededTopics = rawTopics topics $ totalNumberOfWords documents
+      numberOfDocuments = length documents
+      numberOfWords = totalNumberOfWords documents
+      vocabularySize = length vocabulary
+      
+      neededTopics = rawTopics topics numberOfWords
 
       vocabulary = create documents
       topicAssignments = create documents neededTopics
       documentTopicMap = create topicAssignments documents
-
-      numberOfDocuments = length documents
-      numberOfWords = length vocabulary
 
 totalNumberOfWords :: [Document] -> Int
 totalNumberOfWords = foldr sumNumberOfWords 0

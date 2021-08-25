@@ -37,6 +37,7 @@ library
       HyperParameter
       LDARunner,
       LDAEstimator,
+      LDAFinalizer,
       Factory,
       ModelFactory,
       Debug,
@@ -44,7 +45,8 @@ library
       WordTopicMap,
       TopicAssignments,
       DocumentTopicMap,
-      InitialTopics
+      InitialTopics,
+      List
   other-modules:
       Paths_IDP
   hs-source-dirs:

@@ -30,7 +30,8 @@ createModels = do
                   beta = 0.1
                 },
             numberOfTopics = 4,
-            numberOfWords = 16,
+            vocabularySize = 16,
+            numberOfWords = 20,
             numberOfDocuments = 4,
             numberOfUpdates = 0,
             documents = testDocuments,
