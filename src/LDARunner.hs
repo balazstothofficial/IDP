@@ -24,17 +24,15 @@ data Input = Input
 instance LDARunner Input where
   run Input {..} = estimatedModel
     where
-      topics = randomTopics seed numberOfTopics
+      factors = randomFactors (seed + 1)
 
       initialModel =
         create
           ModelFactory.Input
             { documents = documents,
               numberOfTopics = numberOfTopics,
-              topics = topics
+              topics = create seed numberOfTopics
             }
-
-      factors = randomFactors (seed + 1)
 
       estimatedModel =
         estimate
@@ -44,12 +42,6 @@ instance LDARunner Input where
               iterations = iterations,
               factors = factors
             }
-
-randomTopics :: Int -> Int -> [Int]
-randomTopics seed numberOfTopics = randomRs range randomGenerator
-  where
-    randomGenerator = mkStdGen seed
-    range = (0, numberOfTopics)
 
 randomFactors :: Int -> [Double]
 randomFactors seed = randomRs (0, 1) randomGenerator

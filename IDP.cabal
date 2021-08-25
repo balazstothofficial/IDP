@@ -43,7 +43,8 @@ library
       TopicCounts,
       WordTopicMap,
       TopicAssignments,
-      DocumentTopicMap
+      DocumentTopicMap,
+      InitialTopics
   other-modules:
       Paths_IDP
   hs-source-dirs:

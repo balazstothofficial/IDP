@@ -1,5 +1,6 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE RecordWildCards #-}
+{-# LANGUAGE FlexibleInstances #-}
 
 module ModelFactory
   ( Input (..),
@@ -10,15 +11,15 @@ where
 import qualified Data.Matrix as Matrix
 import Document (Document (..))
 import Factory
+import InitialTopics
 import HyperParameter
 import Model
 import Prelude hiding (words)
 
--- TODO: Make sure that right amount of topics is provided
 data Input = Input
   { documents :: [Document],
     numberOfTopics :: Int,
-    topics :: [Int]
+    topics :: InitialTopics
   }
 
 instance Factory Input Model where
@@ -43,7 +44,7 @@ instance Factory Input Model where
         topicAssignments = topicAssignments
       }
     where
-      neededTopics = take (totalNumberOfWords documents) topics
+      neededTopics = rawTopics topics $ totalNumberOfWords documents
 
       vocabulary = create documents
       topicAssignments = create documents neededTopics

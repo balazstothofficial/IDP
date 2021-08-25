@@ -5,7 +5,6 @@ module LDAEstimatorTest where
 import qualified Data.Map as Map
 import qualified Data.Matrix as Matrix
 import qualified Data.Set as Set
-import Document (Document, create)
 import HyperParameter
 import LDAEstimator (estimate)
 import qualified LDAEstimator
@@ -14,6 +13,8 @@ import qualified Model
 import qualified ModelFactory
 import Test.HUnit
 import Test.Hspec
+import InitialTopics
+import Document (Document)
 
 estimateDocuments :: Spec
 estimateDocuments = do
@@ -218,7 +219,7 @@ initialModel =
   create
     ModelFactory.Input
       { documents = documents,
-        topics = [2, 2, 1, 1, 1, 4, 3, 4, 4, 1, 0, 2, 0, 4, 4, 1],
+        topics = create [2::Int, 2, 1, 1, 1, 4, 3, 4, 4, 1, 0, 2, 0, 4, 4, 1],
         numberOfTopics = 5
       }
 

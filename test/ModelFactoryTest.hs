@@ -21,7 +21,7 @@ createModels = do
         Input
           { documents = testDocuments,
             numberOfTopics = 4,
-            topics = testTopics
+            topics = testInitialTopics
           }
         @?= Model
           { hyperParameter =
