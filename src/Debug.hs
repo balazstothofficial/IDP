@@ -2,9 +2,10 @@
 
 module Debug where
 
+import Data.List (sortOn)
 import qualified Data.List as List
 import qualified Data.Matrix as Matrix
-import Data.Ord (comparing)
+import Data.Ord (Down (..), comparing)
 import qualified Data.Set as Set
 import Debug.Trace (trace)
 import Document
@@ -15,27 +16,34 @@ import Model
 
 infixr 1 ?
 
+-- TODO: Make nicer!
 showResult :: Model -> String
-showResult Model {..} = iterate documents thetaLists []
+showResult Model {..} = iterate documents thetaLists
   where
-    thetaLists = Matrix.toLists theta
-    phiLists = Matrix.toLists phi
-
-    iterate [] [] _ = ""
-    iterate (document : ds) (topics : ts) usedTopics =
-      "\nDocument: " ++ title ++ "\n"
-        ++ "Best topic: "
-        ++ show topicWords
-        ++ iterate ds ts (maxTopic : usedTopics)
+    thetaLists = Matrix.toLists theta -- Document x Topic
+    phiLists = Matrix.toLists phi -- Topic x Word
+    iterate [] [] = ""
+    iterate (document : ds) (topics : ts) =
+      "\n\nDocument: " ++ title ++ "\n"
+        ++ "Best topics:"
+        ++ "\n1:"
+        ++ show (topicWords (bestTopics !! 0))
+        ++ "\n2:"
+        ++ show (topicWords (bestTopics !! 1))
+        ++ "\n3:"
+        ++ show (topicWords (bestTopics !! 2))
+        ++ "\n4:"
+        ++ show (topicWords (bestTopics !! 3))
+        ++ "\n5:"
+        ++ show (topicWords (bestTopics !! 4))
+        ++ iterate ds ts
       where
         title = Document.title document
 
-        maxTopic = recurse (maxIndex topics)
-          where
-            recurse [] = 0
-            recurse (s : sortedTopics) = if s `elem` usedTopics then recurse sortedTopics else s
+        bestTopics :: [Int]
+        bestTopics = maxIndex topics
 
-        topicWords = fmap getWord $ take 10 $ List.sortBy (comparing fst) $ zip (phiLists !! maxTopic) [0 ..]
+        topicWords topic = fmap getWord $ take 10 $ sortOn (negate . fst) $ zip (phiLists !! topic) [0 ..]
 
     getWord (_, i) = Set.elemAt i vocabulary
-    maxIndex xs = fmap snd (List.sortBy (comparing fst) (zip xs [0 ..]))
+    maxIndex xs = fmap snd (sortOn (negate . fst) (zip xs [0 ..]))

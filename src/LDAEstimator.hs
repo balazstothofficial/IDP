@@ -29,7 +29,6 @@ estimate Input {..} = case iterations ? "Iteration: " ++ show iterations of
           iterations = iterations - 1,
           factors = drop numberOfWords factors
         }
-      ? show (Model.topicAssignments iteratedModel)
   where
     numberOfWords = Model.numberOfWords model
     iteratedModel = sampleDocuments model factors

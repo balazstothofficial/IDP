@@ -12,7 +12,7 @@ import Model (Model (..))
 computePhi :: Model -> Model
 computePhi Model {..} = Model {..} {Model.phi = newPhi}
   where
-    newPhi = Matrix.matrix numberOfTopics numberOfWords fill
+    newPhi = Matrix.matrix numberOfTopics vocabularySize fill
     beta = HyperParameter.beta hyperParameter
 
     fill :: (Int, Int) -> Double
