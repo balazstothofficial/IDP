@@ -11,7 +11,7 @@ newtype InitialTopics = InitialTopics [Int]
 instance Factory [Int] InitialTopics where
   create = InitialTopics
 
--- TODO: Make seed vs. numberOfTopics type safe?
+-- TODO: Make seed and numberOfTopics type safe?
 instance Factory Int (Int -> InitialTopics) where
   create seed numberOfTopics = InitialTopics $ randomRs range randomGenerator
     where

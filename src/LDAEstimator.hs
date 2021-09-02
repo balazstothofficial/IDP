@@ -23,8 +23,6 @@ estimate :: Input -> Model
 estimate Input {..} = case iterations ? "Iteration: " ++ show iterations of
   0 -> model
   _ ->
-    -- TODO: computePhi $
-    -- TODO: computeTheta $
     estimate
       Input
         { model = iteratedModel,
@@ -119,23 +117,9 @@ multinomialSampling Model {..} word Document {..} =
     beta = HyperParameter.beta hyperParameter
 
     sampling topic =
-      samplingResult
-        ? "\nSampling Result: " ++ show samplingResult
-          ++ "\nTopic: "
-          ++ show topic
-          ++ "\nNoWordForTopic: "
-          ++ show numberOfWordsWithTopic
-          ++ "\nNoTopic: "
-          ++ show occurrencesOfTopic
-          ++ "\nNoTopicInDoc: "
-          ++ show occurrencesOfTopicInDocument
-          ++ "\nNoWordInDoc: "
-          ++ show numberOfWordsInDocument
+      (numberOfWordsWithTopic + beta) / (occurrencesOfTopic + vBeta)
+        * (occurrencesOfTopicInDocument + alpha) / (numberOfWordsInDocument + kAlpha)
       where
-        samplingResult =
-          (numberOfWordsWithTopic + beta) / (occurrencesOfTopic + vBeta)
-            * (occurrencesOfTopicInDocument + alpha) / (numberOfWordsInDocument + kAlpha)
-
         numberOfWordsWithTopic = fromIntegral $ Map.findWithDefault 0 (word, topic) wordTopicMap
         occurrencesOfTopic = fromIntegral $ Map.findWithDefault 0 topic topicCounts
         occurrencesOfTopicInDocument =

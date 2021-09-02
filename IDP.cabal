@@ -80,7 +80,7 @@ test-suite IDP-test
       Paths_IDP
       DocumentTest
       ModelFactoryTest
-      LDAEstimatorTest
+      RegressionTest
       TopicCountsTest
   hs-source-dirs:
       test

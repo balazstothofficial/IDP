@@ -1,5 +1,5 @@
 import DocumentTest
-import LDAEstimatorTest
+import RegressionTest
 import ModelFactoryTest
 import Test.Hspec
 import TopicCountsTest

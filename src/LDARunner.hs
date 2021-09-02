@@ -6,6 +6,7 @@ import Document (Document)
 import Factory
 import LDAEstimator (estimate)
 import qualified LDAEstimator
+import LDAFinalizer
 import Model (Model (..))
 import qualified ModelFactory
 import System.Random (mkStdGen, randomRs)
@@ -22,7 +23,7 @@ data Input = Input
   deriving (Show, Eq)
 
 instance LDARunner Input where
-  run Input {..} = estimatedModel
+  run Input {..} = computeTheta $ computePhi estimatedModel
     where
       factors = randomFactors (seed + 1)
 
