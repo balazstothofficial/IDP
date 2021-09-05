@@ -8,12 +8,12 @@ import LDARunner
 import Debug
 
 main :: IO ()
-main = readInterviews directory >>= putStrLn . showResult . runLDA . test
+main = readInterviews directory >>= putStrLn . showResult . runLDA . createDocuments
   where
-    runLDA documents = run (Input documents 10 50 2323453)
+    runLDA documents = run (Input documents 500 75 42069420)
 
-test :: [Interview] -> [Document]
-test = fmap create
+createDocuments :: [Interview] -> [Document]
+createDocuments = fmap create
 
 directory :: Directory
 directory = Relative "interviews"

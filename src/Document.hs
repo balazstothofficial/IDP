@@ -46,9 +46,15 @@ instance Factory Interview Document where
       filter filtered $
         fmap lowercase $
           splitOn " " $
-            filter isBad content
+            replace <$> filter isBad content
     where
-      isBad char = char `notElem` ".,!?\n\r()/:+-\""
+      replace '\402' = 'ß'
+      replace '\241' = 'ä'
+      replace '\226' = 'ö'
+      replace '\9565' = 'ü'
+      replace char = char
+
+      isBad char = char `notElem` ".,!?\n\r()/:+-\"\9500][><"
 
       filtered word =
         word /= ""
@@ -74,15 +80,40 @@ lowercase = fmap toLower
 
 -- Own + https://countwordsfree.com/stopwords/german
 -- TODO: Move to own file
+-- TODO: Fix encoding issues!
 stopWords :: [String]
 stopWords =
   [ "ich",
     "ist",
+    "\244\231\170",
+    "w\252rd",
+    "klar",
+    "leu",
+    "\244\231\215ja",
     "sie",
     "das",
     "und",
     "auch",
+    "find",
     "dann",
+    "finde",
+    "eher",
+    "ner",
+    "nen",
+    "nem",
+    "\244\231\244",
+    "gr\228fe",
+    "glaub",
+    "s\252\223",
+    "gibt\244\231\255s",
+    "gibt\244\231\246s",
+    "w\228r",
+    "grade",
+    "w\252rd",
+    "\244\231\215ich",
+    "\244\231\215wie",
+    "n\9516\9508",
+    "sag",
     "die",
     "nicht",
     "dass",
@@ -177,6 +208,7 @@ stopWords =
     "mal",
     "ein",
     "immer",
+    "k\226nnen",
     "mir",
     "sind",
     "ganz",
@@ -338,6 +370,8 @@ stopWords =
     "besten",
     "bin",
     "bis",
+    "bisschen",
+    "irgendwie",
     "bisher",
     "bist",
     "c",
@@ -659,6 +693,7 @@ stopWords =
     "nachdem",
     "nahm",
     "natürlich",
+    "nat\9500\9565rlich",
     "neben",
     "nein",
     "neue",

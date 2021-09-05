@@ -24,7 +24,7 @@ showResult Model {..} = iterate documents thetaLists
     phiLists = Matrix.toLists phi -- Topic x Word
     iterate [] [] = ""
     iterate (document : ds) (topics : ts) =
-      "\n\nDocument: " ++ title ++ "\n"
+      fmap replace ("\n\nDocument: " ++ title ++ "\n"
         ++ "Best topics:"
         ++ "\n1:"
         ++ show (topicWords (bestTopics !! 0))
@@ -36,14 +36,23 @@ showResult Model {..} = iterate documents thetaLists
         ++ show (topicWords (bestTopics !! 3))
         ++ "\n5:"
         ++ show (topicWords (bestTopics !! 4))
-        ++ iterate ds ts
+        ++ iterate ds ts)
       where
+        replace '\402' = 'ß'
+        replace '\241' = 'ä'
+        replace '\226' = 'ö'
+        replace '\9565' = 'ü'
+        replace '„' = 'ä'
+        replace '”' = 'ö'
+        replace 'Ž' = 'Ä'
+        replace char = char
+
         title = Document.title document
 
         bestTopics :: [Int]
         bestTopics = maxIndex topics
 
-        topicWords topic = fmap getWord $ take 10 $ sortOn (negate . fst) $ zip (phiLists !! topic) [0 ..]
+        topicWords topic = fmap getWord $ take 15 $ sortOn (negate . fst) $ zip (phiLists !! topic) [0 ..]
 
     getWord (_, i) = Set.elemAt i vocabulary
     maxIndex xs = fmap snd (sortOn (negate . fst) (zip xs [0 ..]))
