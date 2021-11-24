@@ -19,17 +19,20 @@ import System.FilePath (pathSeparator)
 class InterviewReader a where
   readInterview :: a -> IO Interview
   readInterviews :: a -> IO [Interview]
+  readInterviewsPerSubfolder :: a -> IO [[Interview]]
 
 instance InterviewReader Directory where
   readInterview = directoryToAbsolutePath >=> readInterview
   readInterviews = directoryToAbsolutePath >=> readInterviews
+  readInterviewsPerSubfolder = directoryToAbsolutePath >=> readInterviewsPerSubfolder
 
 instance InterviewReader FilePath where
   readInterview path = do
     _ <- setLocaleEncoding utf8
-    readFile path <&> Interview fileName
+    readFile path <&> Interview fileName groupName
     where
       fileName = last splitPath
+      groupName = last $ init splitPath
       splitPath = splitOn [pathSeparator] path
 
   readInterviews path = doesFileExist path >>= recurse
@@ -38,3 +41,5 @@ instance InterviewReader FilePath where
         if isFile
           then readInterview path <&> (: [])
           else listDirectoryWithFullPath path >>= fmap concat . mapM readInterviews
+          
+  readInterviewsPerSubfolder path = listDirectoryWithFullPath path >>= mapM readInterviews

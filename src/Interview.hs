@@ -2,6 +2,7 @@ module Interview where
 
 data Interview = Interview
   { title :: String,
+    group :: String,
     content :: String
   }
   deriving (Eq)
