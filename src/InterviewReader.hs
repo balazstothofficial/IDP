@@ -11,6 +11,7 @@ import Control.Monad ((>=>))
 import Data.Functor ((<&>))
 import Data.List.Split
 import Directory
+import GHC.IO.Encoding (setLocaleEncoding, utf8)
 import Interview
 import System.Directory (doesFileExist)
 import System.FilePath (pathSeparator)
@@ -24,7 +25,9 @@ instance InterviewReader Directory where
   readInterviews = directoryToAbsolutePath >=> readInterviews
 
 instance InterviewReader FilePath where
-  readInterview path = readFile path <&> Interview fileName
+  readInterview path = do
+    _ <- setLocaleEncoding utf8
+    readFile path <&> Interview fileName
     where
       fileName = last splitPath
       splitPath = splitOn [pathSeparator] path

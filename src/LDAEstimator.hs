@@ -20,12 +20,12 @@ data Input = Input
 
 -- TODO: Try to replace foldl with foldr and topics ++ [topic] with topic : topics
 estimate :: Input -> Model
-estimate Input {..} = case iterations ? "Iteration: " ++ show iterations of
+estimate Input {..} = case iterations of
   0 -> model
   _ ->
     estimate
       Input
-        { model = iteratedModel,
+        { model = iteratedModel {numberOfUpdates = Model.numberOfUpdates model + 1},
           iterations = iterations - 1,
           factors = drop numberOfWords factors
         }

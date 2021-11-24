@@ -2,6 +2,7 @@
 
 module LDARunner where
 
+import Debug (showResult, (?))
 import Document (Document)
 import Factory
 import LDAEstimator (estimate)
@@ -10,23 +11,23 @@ import LDAFinalizer
 import Model (Model (..))
 import qualified ModelFactory
 import System.Random (mkStdGen, randomRs)
+import Prelude hiding (iterate)
 
 class LDARunner a where
-  run :: a -> Model
+  run :: a -> [Model]
 
 data Input = Input
   { documents :: [Document],
-    iterations :: Int,
+    saveIterations :: Int,
+    saveInterval :: Int,
     numberOfTopics :: Int,
     seed :: Int
   }
   deriving (Show, Eq)
 
 instance LDARunner Input where
-  run Input {..} = computeTheta $ computePhi estimatedModel
+  run Input {..} = scanl iterate initialModel [0 .. saveIterations - 1]
     where
-      factors = randomFactors (seed + 1)
-
       initialModel =
         create
           ModelFactory.Input
@@ -35,13 +36,18 @@ instance LDARunner Input where
               topics = create seed numberOfTopics
             }
 
-      estimatedModel =
-        estimate
-          LDAEstimator.Input
-            { model = initialModel,
-              iterations = iterations,
-              factors = factors
-            }
+      iterate model iteration = estimatedModel
+        where
+          factors = randomFactors (seed + iteration)
+          estimatedModel =
+            computeTheta $
+              computePhi $
+                estimate
+                  LDAEstimator.Input
+                    { model = model,
+                      iterations = saveInterval,
+                      factors = factors
+                    }
 
 randomFactors :: Int -> [Double]
 randomFactors seed = randomRs (0, 1) randomGenerator

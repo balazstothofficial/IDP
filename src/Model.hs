@@ -19,7 +19,7 @@ import TopicCounts (TopicCounts)
 import Vocabulary
 import WordTopicMap (WordTopicMap)
 
--- TODO: Use some Nat type instead of Ints
+-- TODO: Use Nat type instead of Ints
 data Model = Model
   { hyperParameter :: HyperParameter,
     numberOfTopics :: Int,

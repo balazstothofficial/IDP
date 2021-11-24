@@ -2,18 +2,19 @@
 
 module Main where
 
+import Debug
 import Document
 import InterviewReader
-import LDARunner
-import Debug
+import Configuration
+import LDARunner hiding (numberOfTopics, saveInterval, saveIterations, seed)
+import GHC.IO.Encoding (setLocaleEncoding, utf8)
 
 main :: IO ()
-main = readInterviews directory >>= putStrLn . showResult . runLDA . createDocuments
+main = readInterviews interviewDirectory >>= sequence_ . write . transform
   where
-    runLDA documents = run (Input documents 500 75 42069420)
+    write models = setLocaleEncoding utf8 : writeFile resultFile "TITEL:" : fmap (appendFile resultFile . showResult) models
+    transform = runLDA . createDocuments
+    runLDA documents = run $ Input documents saveIterations saveInterval numberOfTopics seed
 
 createDocuments :: [Interview] -> [Document]
 createDocuments = fmap create
-
-directory :: Directory
-directory = Relative "interviews"

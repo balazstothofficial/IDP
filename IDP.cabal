@@ -46,7 +46,8 @@ library
       TopicAssignments,
       DocumentTopicMap,
       InitialTopics,
-      List
+      List,
+      Configuration
   other-modules:
       Paths_IDP
   hs-source-dirs:
@@ -58,7 +59,8 @@ library
       filepath,
       containers,
       matrix,
-      random
+      random,
+      time
   default-language: Haskell2010
 
 executable IDP-exe

@@ -46,15 +46,9 @@ instance Factory Interview Document where
       filter filtered $
         fmap lowercase $
           splitOn " " $
-            replace <$> filter isBad content
+            filter isBad content
     where
-      replace '\402' = 'ß'
-      replace '\241' = 'ä'
-      replace '\226' = 'ö'
-      replace '\9565' = 'ü'
-      replace char = char
-
-      isBad char = char `notElem` ".,!?\n\r()/:+-\"\9500][><"
+      isBad char = char `notElem` ".,!?\n\r()/:+-\"][><'"
 
       filtered word =
         word /= ""

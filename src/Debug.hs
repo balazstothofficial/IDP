@@ -18,35 +18,36 @@ infixr 1 ?
 
 -- TODO: Make nicer!
 showResult :: Model -> String
-showResult Model {..} = iterate documents thetaLists
+showResult Model {..} = "\n\nAfter Iteration: " ++ show numberOfUpdates ++ "\n" ++ iterate documents thetaLists
   where
     thetaLists = Matrix.toLists theta -- Document x Topic
     phiLists = Matrix.toLists phi -- Topic x Word
     iterate [] [] = ""
     iterate (document : ds) (topics : ts) =
-      fmap replace ("\n\nDocument: " ++ title ++ "\n"
+      "\n\nDocument: " ++ title ++ "\n"
         ++ "Best topics:"
         ++ "\n1:"
-        ++ show (topicWords (bestTopics !! 0))
+        ++ concatToString (topicWords (bestTopics !! 0))
         ++ "\n2:"
-        ++ show (topicWords (bestTopics !! 1))
+        ++ concatToString (topicWords (bestTopics !! 1))
         ++ "\n3:"
-        ++ show (topicWords (bestTopics !! 2))
+        ++ concatToString (topicWords (bestTopics !! 2))
         ++ "\n4:"
-        ++ show (topicWords (bestTopics !! 3))
+        ++ concatToString (topicWords (bestTopics !! 3))
         ++ "\n5:"
-        ++ show (topicWords (bestTopics !! 4))
-        ++ iterate ds ts)
+        ++ concatToString (topicWords (bestTopics !! 4))
+        ++ "\n6:"
+        ++ concatToString (topicWords (bestTopics !! 5))
+        ++ "\n7:"
+        ++ concatToString (topicWords (bestTopics !! 6))
+        ++ "\n8:"
+        ++ concatToString (topicWords (bestTopics !! 7))
+        ++ "\n9:"
+        ++ concatToString (topicWords (bestTopics !! 8))
+        ++ "\n10:"
+        ++ concatToString (topicWords (bestTopics !! 9))
+        ++ iterate ds ts
       where
-        replace '\402' = 'ß'
-        replace '\241' = 'ä'
-        replace '\226' = 'ö'
-        replace '\9565' = 'ü'
-        replace '„' = 'ä'
-        replace '”' = 'ö'
-        replace 'Ž' = 'Ä'
-        replace char = char
-
         title = Document.title document
 
         bestTopics :: [Int]
@@ -56,3 +57,6 @@ showResult Model {..} = iterate documents thetaLists
 
     getWord (_, i) = Set.elemAt i vocabulary
     maxIndex xs = fmap snd (sortOn (negate . fst) (zip xs [0 ..]))
+    
+concatToString :: [String] -> String
+concatToString strings = "[" ++ List.intercalate ", " strings ++ "]"
