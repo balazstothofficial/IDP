@@ -33,13 +33,13 @@ resultDirectory name = do
     directoryName = "result"
 
 seed :: Int
-seed = 69
+seed = 42061969
 
 numberOfTopics :: Int
-numberOfTopics = 50
+numberOfTopics = 100
 
 saveIterations :: Int
-saveIterations = 1
+saveIterations = 40
 
 saveInterval :: Int
-saveInterval = 1
+saveInterval = 25

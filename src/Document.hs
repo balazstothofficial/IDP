@@ -46,9 +46,14 @@ instance Factory Interview Document where
       filter filtered $
         fmap lowercase $
           splitOn " " $
-            filter isBad content
+            filter isBad $
+              fmap replace content
     where
-      isBad char = char `notElem` ".,!?\n\r()/:+-\"][><"
+      isBad char = char `notElem` ".,!?\r()/:+-\"][><„“…´’"
+
+      replace '\n' = ' '
+      replace '_' = ' '
+      replace char = char
 
       filtered word =
         word /= ""
@@ -74,13 +79,87 @@ lowercase = fmap toLower
 
 -- Own + https://countwordsfree.com/stopwords/german
 -- TODO: Move to own file
--- TODO: Fix encoding issues!
 stopWords :: [String]
 stopWords =
-  [ "glaube",
+  [ -- names:
+    "nielsen",
+    "frank",
+    "heisterkamp",
+    "maria",
+    "sabine",
+    "karl",
+    "lemke",
+    "jänicke",
+    "gottfried",
+    "ursula",
+    "matuschek",
+    "may",
+    "huber",
+    "emma",
+    "liebert",
+    "münch",
+    "röpke",
+    "schulze",
+    "schmidbauer",
+    "henriette",
+    "heidrun",
+    "georg",
+    "kneisel",
+    "buchegger",
+    "franke",
+    "baumann",
+    "elisabeth",
+    "udo",
+    "marie",
+    "cordes",
+    "kuster",
+    "idenhofer",
+    "hildegard",
+    "schuster",
+    "bärbel",
+    "corte",
+    "henze",
+    "kobe",
+    "kamp",
+    "jacobs",
+    "herbert",
+    "täuber",
+    "gonzales",
+    "karl",
+    "martha",
+    "rolf",
+    "beckmann",
+    "hartmann",
+    "linda",
+    "fischer",
+    "schulze",
+    "schmidbauer",
+    "markus",
+    "kaiser",
+    --
+    "glaube",
+    "gib",
+    "g´sagt",
+    "drüben",
+    "gsagt",
+    "hieralso",
     "heißt",
+    "wenns",
     "naja",
+    "wär",
+    "ham",
+    "ned",
+    "nimmer",
+    "nich",
+    "möchten",
     "gerne",
+    "insofern",
+    "obs",
+    "jetzigen",
+    "dasdas",
+    "ichs",
+    "hab",
+    "gibts",
     "irgendwas",
     "manchmal",
     "irgendwann",
@@ -92,6 +171,8 @@ stopWords =
     "gehört",
     "erstmal",
     "nochmal",
+    "nehm",
+    "nehmen",
     "sachen",
     "selber",
     "okay",
@@ -110,15 +191,21 @@ stopWords =
     "selber",
     "gehe",
     "häufig",
+    "ach",
+    "habns",
+    "sodass",
+    "drauf",
     "thema",
     "heißt",
     "frau",
     "sozusagen",
     "dergleichen",
     "sprich",
+    "drauf",
     "fragen",
     "drumrum",
-    "ach","ah",
+    "ach",
+    "ah",
     "meist",
     "beispielsweise",
     "bezüglich",
