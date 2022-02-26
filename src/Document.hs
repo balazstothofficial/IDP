@@ -41,15 +41,25 @@ instance Factory String ([String] -> Document) where
       }
 
 instance Factory Interview Document where
-  create Interview {..} =
-    create title $
-      filter filtered $
-        fmap lowercase $
-          splitOn " " $
-            filter isBad $
-              fmap replace content
+  create Interview {..} = document
     where
+      document =
+        create title $
+          filter filtered $
+            fmap lowercase $
+              splitOn " " $
+                filter isBad $
+                  fmap replace $
+                    concat $
+                      filter removeQuestions $
+                        splitOn "\n" content
+
       isBad char = char `notElem` ".,!?\r()/:+-\"][><„“…´’"
+
+      removeQuestions ('I' : ':' : _) = False 
+      removeQuestions ('I' : '1' : ':' : _) = False
+      removeQuestions ('I' : '2' : ':' : _) = False
+      removeQuestions _ = True
 
       replace '\n' = ' '
       replace '_' = ' '

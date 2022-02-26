@@ -5,4 +5,4 @@ module Main where
 import InterviewLDARunner
 
 main :: IO ()
-main = runLDAPerSubfolder
+main = runLDAOnFullDataSetWithCombinedSubfolders

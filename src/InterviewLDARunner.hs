@@ -13,6 +13,27 @@ import LDARunner hiding (documents, numberOfTopics, saveInterval, saveIterations
 import System.Directory.Internal.Prelude (catMaybes)
 import System.IO
 
+runLDAOnFullDataSetWithCombinedSubfolders :: IO ()
+runLDAOnFullDataSetWithCombinedSubfolders = readInterviewsPerSubfolder interviewDirectory >>= processInterviews
+  where
+    
+    processInterviews interviews = resultDirectory fullDataSet >>= flip processInterviewsToFiles interviews
+
+    processInterviewsToFiles fileName = sequence_ . writeToFile fileName . runLDAOnInterviews
+
+    writeToFile fileName models =
+      setLocaleEncoding utf8 :
+      writeFile fileName fullDataSet :
+      fmap (appendFile fileName . showResult) models
+        
+    runLDAOnInterviews = runLDA . fmap toDocuments
+      where
+        toDocuments interviews = combineDocuments groupName $ createDocuments interviews
+          where
+            groupName = group $ head interviews
+
+    runLDA documents = run $ Input documents saveIterations saveInterval numberOfTopics seed
+
 runLDAOnCombinedFullDataSet :: IO ()
 runLDAOnCombinedFullDataSet = readInterviews interviewDirectory >>= processInterviews
   where
